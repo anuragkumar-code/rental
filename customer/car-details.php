@@ -2,279 +2,141 @@
 
 <section id="subheader" class="jarallax text-light">
     <img src="../assets/images/background/2.jpg" class="jarallax-img" alt="">
-        <div class="center-y relative text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h1>Vehicle Fleet</h1>
-                    </div>
-                    <div class="clearfix"></div>
+    <div class="center-y relative text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1>Car Details</h1>
                 </div>
+                <div class="clearfix"></div>
             </div>
         </div>
+    </div>
 </section>
 
+
 <section id="section-car-details">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-6">
-                <div id="slider-carousel" class="owl-carousel">
-                    <div class="item">
-                        <img src="../assets/images/car-single/1.jpg" alt="">
-                    </div>
-                    <div class="item">
-                        <img src="../assets/images/car-single/2.jpg" alt="">
-                    </div>
-                    <div class="item">
-                        <img src="../assets/images/car-single/3.jpg" alt="">
-                    </div>
-                    <div class="item">
-                        <img src="../assets/images/car-single/4.jpg" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <h3>BMW M2 2020</h3>
-                <p>The BMW M2 is the high-performance version of the 2 Series 2-door coupé. The first generation of the M2 is the F87 coupé and is powered by turbocharged.</p>
-                <div class="spacer-10"></div>
-                <h4>Specifications</h4>
-                <div class="de-spec">
-                    <div class="d-row">
-                        <span class="d-title">Body</span>
-                        <spam class="d-value">Sedan</spam>
-                    </div>
-                        <div class="d-row">
-                            <span class="d-title">Seat</span>
-                            <spam class="d-value">2 seats</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Door</span>
-                            <spam class="d-value">2 doors</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Luggage</span>
-                            <spam class="d-value">150</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Fuel Type</span>
-                            <spam class="d-value">Hybird</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Engine</span>
-                            <spam class="d-value">3000</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Year</span>
-                            <spam class="d-value">2020</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Mileage</span>
-                            <spam class="d-value">200</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Transmission</span>
-                            <spam class="d-value">Automatic</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Drive</span>
-                            <spam class="d-value">4WD</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Fuel Economy</span>
-                            <spam class="d-value">18.5</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Exterior Color</span>
-                            <spam class="d-value">Blue Metalic</spam>
-                        </div>
-                        <div class="d-row">
-                            <span class="d-title">Interior Color</span>
-                            <spam class="d-value">Black</spam>
-                        </div>
-                    </div>
+    
+</section>
 
-                    <div class="spacer-single"></div>
 
-                    <h4>Features</h4>
-                    <ul class="ul-style-2">
-                        <li>Bluetooth</li>
-                        <li>Multimedia Player</li>
-                        <li>Central Lock</li>
-                        <li>Sunroof</li>
-                    </ul>
-                </div>
 
-                <div class="col-lg-3">
-                    <div class="de-price text-center">
-                        Daily rate
-                        <h3>$265</h3>
-                    </div>
-                    <div class="spacer-30"></div>
-                    <div class="de-box mb25">
-                        <form name="contactForm" id='contact_form' method="post">
-                            <h4>Booking this car</h4>
 
-                            <div class="spacer-20"></div>
+<script>
 
-                            <div class="row">
-                                <div class="col-lg-12 mb20">
-                                    <h5>Pick Up Location</h5>
-                                    <input type="text" name="PickupLocation" onfocus="geolocate()" placeholder="Enter your pickup location" id="autocomplete" autocomplete="off" class="form-control">
+ function categoryFilter() {
+     
+     var car_id = "<?php echo $_GET['car_id']; ?>";
 
-                                    <div class="jls-address-preview jls-address-preview--hidden">
-                                        <div class="jls-address-preview__header">
-                                        </div>
-                                    </div>
-                                </div>
+        $.ajax({
+            type: 'POST',
+            url: 'functions/cars/car-details.php',
+            data: {
+                
+                car_id: car_id
+                
+            },
+            success: function(response) {
+                $('#section-car-details').html(''); 
+                $('#section-car-details').html(response);
+                
+                $('#slider-carousel').owlCarousel('destroy'); 
+                $('#slider-carousel').owlCarousel({
+                    loop: true,
+                    items: 1,
+                    dots: false,
+                    thumbs: true,
+                    thumbImage: true,
+                    thumbContainerClass: 'owl-thumbs',
+                    thumbItemClass: 'owl-thumb-item'
+                });
+            },
+            error: function() {
+                alert('An error occurred while fetching the products.');
+            }
+        });
+    }    
 
-                                 <div class="col-lg-12 mb20">
-                                     <h5>Drop Off Location</h5>
-                                     <input type="text" name="DropoffLocation" onfocus="geolocate()" placeholder="Enter your dropoff location" id="autocomplete2" autocomplete="off" class="form-control">
-                                    <div class="jls-address-preview jls-address-preview--hidden">
-                                        <div class="jls-address-preview__header">
-                                        </div>
-                                    </div>
-                                </div>
+    setTimeout(()=>{
+        categoryFilter(); 
+    },1000);
 
-                                <div class="col-lg-12 mb20">
-                                    <h5>Pick Up Date & Time</h5>
-                                    <div class="date-time-field">
-                                        <input type="text" id="date-picker" name="Pick Up Date" value="">
-                                        <select name="Pick Up Time" id="pickup-time">
-                                                    <option selected disabled value="Select time">Time</option>
-                                                    <option value="00:00">00:00</option>
-                                                    <option value="00:30">00:30</option>
-                                                    <option value="01:00">01:00</option>
-                                                    <option value="01:30">01:30</option>
-                                                    <option value="02:00">02:00</option>
-                                                    <option value="02:30">02:30</option>
-                                                    <option value="03:00">03:00</option>
-                                                    <option value="03:30">03:30</option>
-                                                    <option value="04:00">04:00</option>
-                                                    <option value="04:30">04:30</option>
-                                                    <option value="05:00">05:00</option>
-                                                    <option value="05:30">05:30</option>
-                                                    <option value="06:00">06:00</option>
-                                                    <option value="06:30">06:30</option>
-                                                    <option value="07:00">07:00</option>
-                                                    <option value="07:30">07:30</option>
-                                                    <option value="08:00">08:00</option>
-                                                    <option value="08:30">08:30</option>
-                                                    <option value="09:00">09:00</option>
-                                                    <option value="09:30">09:30</option>
-                                                    <option value="10:00">10:00</option>
-                                                    <option value="10:30">10:30</option>
-                                                    <option value="11:00">11:00</option>
-                                                    <option value="11:30">11:30</option>
-                                                    <option value="12:00">12:00</option>
-                                                    <option value="12:30">12:30</option>
-                                                    <option value="13:00">13:00</option>
-                                                    <option value="13:30">13:30</option>
-                                                    <option value="14:00">14:00</option>
-                                                    <option value="14:30">14:30</option>
-                                                    <option value="15:00">15:00</option>
-                                                    <option value="15:30">15:30</option>
-                                                    <option value="16:00">16:00</option>
-                                                    <option value="16:30">16:30</option>
-                                                    <option value="17:00">17:00</option>
-                                                    <option value="17:30">17:30</option>
-                                                    <option value="18:00">18:00</option>
-                                                    <option value="18:30">18:30</option>
-                                                    <option value="19:00">19:00</option>
-                                                    <option value="19:30">19:30</option>
-                                                    <option value="20:00">20:00</option>
-                                                    <option value="20:30">20:30</option>
-                                                    <option value="21:00">21:00</option>
-                                                    <option value="21:30">21:30</option>
-                                                    <option value="22:00">22:00</option>
-                                                    <option value="22:30">22:30</option>
-                                                    <option value="23:00">23:00</option>
-                                                    <option value="23:30">23:30</option>
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <div class="col-lg-12 mb20">
-                                    <h5>Return Date & Time</h5>
-                                    <div class="date-time-field">
-                                        <input type="text" id="date-picker-2" name="Collection Date" value="">
-                                        <select name="Collection Time" id="collection-time">
-                                                    <option selected disabled value="Select time">Time</option>
-                                                    <option value="00:00">00:00</option>
-                                                    <option value="00:30">00:30</option>
-                                                    <option value="01:00">01:00</option>
-                                                    <option value="01:30">01:30</option>
-                                                    <option value="02:00">02:00</option>
-                                                    <option value="02:30">02:30</option>
-                                                    <option value="03:00">03:00</option>
-                                                    <option value="03:30">03:30</option>
-                                                    <option value="04:00">04:00</option>
-                                                    <option value="04:30">04:30</option>
-                                                    <option value="05:00">05:00</option>
-                                                    <option value="05:30">05:30</option>
-                                                    <option value="06:00">06:00</option>
-                                                    <option value="06:30">06:30</option>
-                                                    <option value="07:00">07:00</option>
-                                                    <option value="07:30">07:30</option>
-                                                    <option value="08:00">08:00</option>
-                                                    <option value="08:30">08:30</option>
-                                                    <option value="09:00">09:00</option>
-                                                    <option value="09:30">09:30</option>
-                                                    <option value="10:00">10:00</option>
-                                                    <option value="10:30">10:30</option>
-                                                    <option value="11:00">11:00</option>
-                                                    <option value="11:30">11:30</option>
-                                                    <option value="12:00">12:00</option>
-                                                    <option value="12:30">12:30</option>
-                                                    <option value="13:00">13:00</option>
-                                                    <option value="13:30">13:30</option>
-                                                    <option value="14:00">14:00</option>
-                                                    <option value="14:30">14:30</option>
-                                                    <option value="15:00">15:00</option>
-                                                    <option value="15:30">15:30</option>
-                                                    <option value="16:00">16:00</option>
-                                                    <option value="16:30">16:30</option>
-                                                    <option value="17:00">17:00</option>
-                                                    <option value="17:30">17:30</option>
-                                                    <option value="18:00">18:00</option>
-                                                    <option value="18:30">18:30</option>
-                                                    <option value="19:00">19:00</option>
-                                                    <option value="19:30">19:30</option>
-                                                    <option value="20:00">20:00</option>
-                                                    <option value="20:30">20:30</option>
-                                                    <option value="21:00">21:00</option>
-                                                    <option value="21:30">21:30</option>
-                                                    <option value="22:00">22:00</option>
-                                                    <option value="22:30">22:30</option>
-                                                    <option value="23:00">23:00</option>
-                                                    <option value="23:30">23:30</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <input type='submit' id='send_message' value='Book Now' class="btn-main btn-fullwidth">
+    function showBookingPopup(){
+        $('#bookingPopup').modal('show');
+    }
 
-                            <div class="clearfix"></div>
-                                    
-                        </form>
-                    </div>
+    function hideBookingPopup(){
+        $('#bookingPopup').modal('hide');
 
-                    <div class="de-box">
-                        <h4>Share</h4>
-                        <div class="de-color-icons">
-                            <span><i class="fa fa-twitter fa-lg"></i></span>
-                            <span><i class="fa fa-facebook fa-lg"></i></span>
-                            <span><i class="fa fa-reddit fa-lg"></i></span>
-                            <span><i class="fa fa-linkedin fa-lg"></i></span>
-                            <span><i class="fa fa-pinterest fa-lg"></i></span>
-                            <span><i class="fa fa-stumbleupon fa-lg"></i></span>
-                            <span><i class="fa fa-delicious fa-lg"></i></span>
-                            <span><i class="fa fa-envelope fa-lg"></i></span>
-                        </div>
-                    </div>
-                </div>                
-            </div>
-        </div>
-    </section>
+    }
+    
+    
+    function makePayment(){
+        
+          let formData = new FormData();
+          let car_id = document.querySelector('input[name="car_id"]').value;
+          let from_date = document.querySelector('input[name="from_date"]').value;
+          let to_date = document.querySelector('input[name="to_date"]').value;
+          let user_id = document.querySelector('input[name="user_id"]').value;
+
+            formData.append('renter_id', "<?php echo $_SESSION['user_id']; ?>");
+            formData.append('car_id', car_id);
+            formData.append('from_date', from_date);
+            formData.append('to_date', to_date);
+            formData.append('user_id', user_id);
+
+             
+            //   console.log("FormData ready to submit:", formData);
+            //   return;
+           
+
+            $.ajax({
+                url: 'functions/bookings/make_payment.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (abc) {
+                   
+                    //  console.log(response);
+                    //  return;
+                    // jsonreturn;
+                    
+                    var fetch = JSON.parse(abc);
+                     console.log(fetch); 
+                     return;
+                    
+                    if (fetch.response[0].status == true) {
+                        
+                        toastr.success('Car Successfully Booked')
+                        // loadProfile();
+                        location.reload();
+                        
+                    }
+                        else {
+                            toastr.error('An error occurred during profile image update. Please try again!');
+                            
+                            $('#editModal').modal('hide'); 
+    
+    
+                             $('#profileImage').val(''); 
+                            
+                        }
+
+                   
+                    // alert('Profile updated successfully!');
+                     
+                },
+                error: function () {
+                    
+                     toastr.error('An error occurred while profile image update. Please try again!');
+                }
+            });
+    }
+    
+    
+</script>
+
 <?php include ('partials/customer-footer.php'); ?>

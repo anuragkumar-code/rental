@@ -1,0 +1,237 @@
+.de-item-list {
+    position: relative;
+}
+
+.toggle-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1; 
+}
+
+.toggle-status {
+    display: none;
+}
+
+.toggle-status + label {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.toggle-status + label:before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.toggle-status:checked + label {
+    background-color: #4CAF50;
+}
+
+.toggle-status:checked + label:before {
+    transform: translateX(20px);
+}
+
+
+.custom-modal-card {
+    border-radius: 10px; 
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #e0e0e0;
+}
+  
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+}
+  
+.form-group label {
+    font-weight: bold;
+}
+  
+.modal-body h6 {
+    border-bottom: 1px solid #e0e0e0; 
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+
+.custom-offcanvas {
+    width: 600px;
+}
+
+.offcanvas-body {
+    padding: 20px;
+}
+
+.offcanvas-footer {
+    padding: 20px;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #4287f5; 
+    box-shadow: 0 0 5px rgba(66, 135, 245, 0.5); 
+    outline: none; 
+}
+
+.btn-main {
+    background-color: #4287f5;
+    border: none; 
+    border-radius: 8px; 
+    color: white; 
+    padding: 9px 28px 8.5px 28px;
+    transition: background-color 0.3s; 
+}
+
+.btn-main:hover {
+    background-color: #3a6abf;
+}
+
+.offcanvas-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px; 
+}
+
+.register-btn {
+    flex: 1; 
+    margin: 0 10px;
+    min-width: 120px; 
+}
+
+.back-button {
+    display: inline-flex;               
+    justify-content: center;           
+    align-items: center;              
+    width: 40px;                      
+    height: 35px;                     
+    background-color: white;      
+    border-radius: 50%;               
+    color: black;                     
+    text-decoration: none;             
+    transition: background-color 0.3s; 
+}
+
+
+.review-button-row{margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;}
+  
+  .car-list-div img {
+    height: 200px; /* Set the fixed height you want */
+    width: auto;   /* Automatically adjust the width to maintain aspect ratio */
+    object-fit: cover;  /* Crop the image to fit within the fixed height */
+    display: block;     /* Remove any gaps caused by inline elements */
+    overflow: hidden;   /* Ensure no overflow outside the container */
+}
+.btn-secondary-signup {
+   background-color: #b23cfd;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 9px 28px 8.5px 28px;
+  transition: background-color 0.3s;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  -webkit-border-radius: 5px;
+  font-family: var(--title-font);
+  text-align: center;
+
+}
+
+.btn-secondary-signup:hover {
+    background-color: #a316fd;
+    color: #fff;
+      box-shadow: 2px 2px 20px 0px rgba(163, 22, 253, 0.5);
+}
+
+.details-img-icons{
+        display: flex;          /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    min-height: 40px;       /* Set min-height */
+    max-height: 40px;       /* Set max-height */
+    overflow: hidden;   
+}
+.details-img-icons img {
+    max-height: 100%;       /* Ensure the image fits within the container */
+    max-width: 100%;        /* Ensure the image doesn't exceed the container's width */
+}
+
+.new_icon_color_filter{
+      filter: brightness(0) saturate(100%) invert(29%) sepia(54%) saturate(666%) hue-rotate(186deg) brightness(95%) contrast(101%);
+}
+
+
+.main-toggle {
+    width: 50px;
+    height: 23px;
+    background-color: #b4bdce;
+    padding: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-toggle span {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    inset-inline-start: 3px;
+    display: block;
+    width: 17px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.main-toggle span::before,
+.main-toggle span::after {
+    position: absolute;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #fff;
+    top: 2px;
+    line-height: 1.38;
+}
+
+.main-toggle span::before {
+    content: "";
+    inset-inline-start: -25px;
+}
+
+.main-toggle span::after {
+    content: "";
+    inset-inline-end: -29px;
+}
+
+.main-toggle.on {
+    background-color: #4287f5;
+}
+
+.main-toggle.on span {
+    inset-inline-start: 29px;
+}
