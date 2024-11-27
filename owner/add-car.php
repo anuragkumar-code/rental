@@ -1,5 +1,12 @@
 <?php include ('partials/owner-header.php'); ?>
 
+<style>
+    body.dimmed {
+        opacity: 0.5;
+        pointer-events: none; 
+    }
+</style>
+
 <section id="subheader" class="jarallax text-light">
     <img src="../assets/images/background/4.jpg" class="jarallax-img" alt="">
     <div class="center-y relative text-center">
@@ -30,7 +37,7 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="model">Select Model</label>
+                        <label for="model">Enter Model</label>
                         <input type="text" id="model" name="model" class="form-control" placeholder="Enter Car Model">
                         <p id="modelError" class="d-none text-danger errorClass">Please enter the car model</p>
                         
@@ -234,6 +241,8 @@
         // if (!ssn) { $('#ssnError').removeClass('d-none'); return; }
         // if (car_images.length === 0) { $('#imagesError').removeClass('d-none'); return; }
 
+        $('body').addClass('dimmed');
+
         var formData = new FormData();
         formData.append('brand', brand);
         formData.append('model', model);
@@ -263,13 +272,17 @@
             processData: false,
             contentType: false, 
             success: function(response) {
+                $('body').removeClass('dimmed');
                 console.log(response);
                 alert('Car details submitted successfully.');
             },
             error: function(xhr, status, error) {
                 alert('An error occurred: ' + error);
                 console.log(xhr.responseText);
-            }
+            },
+            complete: function() {
+            $('body').removeClass('dimmed');
+        }
         });
     }
 

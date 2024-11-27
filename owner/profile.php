@@ -98,14 +98,13 @@ curl_close($curl);
                                 <span class="profile_username text-gray"><?= $email ?></span>
                             </h4>
                         </div>
-</div>
+                    </div>
                     <div class="spacer-20"></div>
                     <ul class="menu-col">
                         <li><a href="javascript:void(0)" onclick="loadProfile()" class="active customClass" id="personalTab"><i class="fa fa-user"></i>Personal Details</a></li>
                         <li><a href="javascript:void(0)" onclick="loadBank()" class="customClass" id="bankTab"><i class="fa fa-calendar"></i>Bank Details</a></li>
                         <li><a href="javascript:void(0)" onclick="loadBookings()" class="customClass" id="bookingTab"><i class="fa fa-car"></i>Bookings Request</a></li>
                         <li><a href="javascript:void(0)" onclick="loadHistory()" class="customClass" id="historyTab"><i class="fa fa-car"></i>Booking History</a></li>
-              
                     </ul>
                 </div>
             </div>
@@ -128,7 +127,6 @@ curl_close($curl);
         <span class="close" onclick="closeModal()">&times;</span>
         <h3>Edit Profile Image</h3>
         <p>Upload a new image here</p>
-        <!-- Add any input fields for editing as needed -->
         <input type="file" id="profileImage"  accept="image/*">
         <button type="button" class="btn-main" onclick="SaveProfileImage()">Update Profile Image</button>
     </div>
@@ -292,23 +290,12 @@ function closeModal() {
     }
 
     function loadBookings(){
-        
-        
-         var user_id = "<?php echo $_SESSION['user_id']; ?>";
-         
-         
         $.ajax({
             url: 'pages/ajax_bookings.php',
             method: 'POST',
-            data: {
-                
-                  user_id : user_id
-                
-            },
             success: function(response) {
                 $('.customClass').removeClass('active');
                 $('#bookingTab').addClass('active');
-
                 $('#mainDiv').html('');
                 $('#mainDiv').html(response);
                 
@@ -318,9 +305,27 @@ function closeModal() {
             }
         });
     }
+
+    function update_booking(booking_id,status){
+        $.ajax({
+            url: 'functions/update_booking.php',
+            method: 'POST',
+            data : {
+                status : status,
+                booking_id : booking_id
+            },
+            success: function(response) {
+               
+                
+            },
+            error: function() {
+                toastr.error('<b>An error occurred while processing your request. Please try again.</b>');
+            }
+        });
+    }
     
     
-      $(document).ready(function() {
+    $(document).ready(function() {
         loadProfile(); // Load profile on page load
     });
 

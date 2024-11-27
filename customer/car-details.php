@@ -20,21 +20,15 @@
 </section>
 
 
-
-
 <script>
 
- function categoryFilter() {
-     
-     var car_id = "<?php echo $_GET['car_id']; ?>";
-
+    function categoryFilter() {
+        var car_id = "<?php echo $_GET['car_id']; ?>";
         $.ajax({
             type: 'POST',
             url: 'functions/cars/car-details.php',
             data: {
-                
                 car_id: car_id
-                
             },
             success: function(response) {
                 $('#section-car-details').html(''); 
@@ -72,68 +66,37 @@
 
     }
     
-    
     function makePayment(){
-        
-          let formData = new FormData();
-          let car_id = document.querySelector('input[name="car_id"]').value;
-          let from_date = document.querySelector('input[name="from_date"]').value;
-          let to_date = document.querySelector('input[name="to_date"]').value;
-          let user_id = document.querySelector('input[name="user_id"]').value;
 
-            formData.append('renter_id', "<?php echo $_SESSION['user_id']; ?>");
-            formData.append('car_id', car_id);
-            formData.append('from_date', from_date);
-            formData.append('to_date', to_date);
-            formData.append('user_id', user_id);
+        var car_id = "<?php echo $_GET['car_id']; ?>";
+        var from_date = $('#from-date').val();
+        var to_date = $('#to-date').val();
+        var owner_id = $('#owner_id').val();
 
-             
-            //   console.log("FormData ready to submit:", formData);
-            //   return;
-           
-
-            $.ajax({
-                url: 'functions/bookings/make_payment.php',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (abc) {
-                   
-                    //  console.log(response);
-                    //  return;
-                    // jsonreturn;
-                    
-                    var fetch = JSON.parse(abc);
-                     console.log(fetch); 
-                     return;
-                    
-                    if (fetch.response[0].status == true) {
-                        
-                        toastr.success('Car Successfully Booked')
-                        // loadProfile();
-                        location.reload();
-                        
-                    }
-                        else {
-                            toastr.error('An error occurred during profile image update. Please try again!');
-                            
-                            $('#editModal').modal('hide'); 
-    
-    
-                             $('#profileImage').val(''); 
-                            
-                        }
-
-                   
-                    // alert('Profile updated successfully!');
-                     
-                },
-                error: function () {
-                    
-                     toastr.error('An error occurred while profile image update. Please try again!');
+        $.ajax({
+            url: 'functions/bookings/make_payment.php',
+            type: 'POST',
+            data:{
+                car_id: car_id,
+                from_date: from_date,
+                to_date: to_date,
+                owner_id: owner_id,
+            },
+            success: function (response) {
+                var fetch = JSON.parse(response);
+                
+                if(fetch.code == '200' && fetch.payment_link){
+                    window.location.href = fetch.payment_link;
+                }else {
+                    toastr.error('An error occurred while initiating the booking. Please try again!');
+                    $('#editModal').modal('hide'); 
+                    $('#profileImage').val(''); 
                 }
-            });
+            },
+            error: function () {
+                toastr.error('An error occurred while initiating the booking. Please try again!');
+            }
+        });
     }
     
     

@@ -1,7 +1,8 @@
 <?php
+
 $curl = curl_init();
 
-$card_id = $_POST['car_id'];
+$car_id = $_POST['car_id'];
 
 curl_setopt_array($curl, array(
     CURLOPT_URL => 'https://alliedtechnologies.cloud/clients/whips/api/v1/renter.php',
@@ -12,7 +13,7 @@ curl_setopt_array($curl, array(
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS => array('request' => 'single_car_details', 'car_id' => $card_id),
+    CURLOPT_POSTFIELDS => array('request' => 'single_car_details', 'car_id' => $car_id),
     CURLOPT_HTTPHEADER => array(
         'Authorization: Bearer e37834b4b0119181b399479527013ab1a206ca8326e23cea4427aacc3ce709a0',
     ),
@@ -22,14 +23,14 @@ $response = curl_exec($curl);
 curl_close($curl);
 
 $response_data = json_decode($response, true);
-
+// echo "<pre>"; print_r($response_data);exit;
 $html = ''; 
 
 if ($response_data['response'][0]['status'] === true && !empty($response_data['response'][0]['data']['car_details'])) {
     $car_data = $response_data['response'][0]['data']['car_details'];
     $car_owner_details = $car_data['owner'];
     
-      $brand = $car_data['brand'];
+    $brand = $car_data['brand'];
     $model = $car_data['model'];
     $description = $car_data['desc'];
     $features = $car_data['features']; 
@@ -47,8 +48,9 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
     $number_plate =$car_data['number_plate'];
     $location =$car_data['loc'];
     $owner_name =$car_owner_details['name'];
+    $owner_contact =$car_owner_details['contact'];
     $car_id = $car_data['car_id'];
-    $user_id = $car_data['owner_id'];
+    $owner_id = $car_data['owner_id'];
       $location = !empty($car_data['loc']) ? $car_data['loc'] : 'Not Specified';
       
     $html .= '
@@ -68,14 +70,6 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                 <div class="col-lg-6">
                     <h3>' . $car_data['brand'] . ' ' . $car_data['model'] . '</h3>
                     <p>' . $car_data['desc'] . '</p>
-                    <div class="spacer-30"></div>
-                    <div class="de-box mb25">
-                
-                        <h4>Owned By</h4>
-           
-                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/profile-men-icon.png" alt="Car Type" />&nbsp;'  . $owner_name. '</div>
-                        
-                    </div>
                     <div class="col-lg-4 text-center">
                         <a href="javascript:void(0)" onclick="showBookingPopup()" class="btn-main btn-lg" style="width: 100%;">Rent Now</a>
                     </div>
@@ -194,28 +188,24 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                                         <img src="' . (!empty($images[0]) ? $images[0] : '../assets/images/car-single/1.jpg') . '" id="car-image" class="img-fluid rounded-start" alt="' . $brand . ' ' . $model . '">
                                     </div>
                                    <div class="col-md-6">
-                                            <div class="card-body">
-                                                <h5 class="card-title" id="car-name">' . $brand . ' ' . $model . '</h5>
-                                                <p class="card-text"><strong>Price:</strong> $' . $car_data['price'] . '</p>
-                                                <p class="card-text"><strong>Location:</strong> ' . $location . '</p>
-                                                <p class="card-text"><strong>Available Dates:</strong></p>
-                                                  <div>
+                                        <div class="card-body">
+                                            <h5 class="card-title" id="car-name">' . $brand . ' ' . $model . '</h5>
+                                            <p class="card-text"><strong>Price:</strong> $' . $car_data['price'] . '</p>
+                                            <p class="card-text"><strong>Location:</strong> ' . $location . '</p>
+                                            <div>
                                                 <label for="from-date">From Date:</label>
                                                 <input type="date" id="from-date" name="from_date" class="form-control">
                                             </div>
                                             <div style="margin-top: 10px;">
                                                 <label for="to-date">To Date:</label>
                                                 <input type="date" id="to-date" name="to_date" class="form-control">
-                                             <input type="hidden"  name="user_id" value="'. $user_id .'" class="form-control">
-                                             <input type="hidden"  name="car_id" value="' . $car_id .'" class="form-control">
-                                            </div>
-                                                </div>
+                                                <input type="hidden"  id="owner_id" value="'. $owner_id .'" class="form-control">
+                                                <input type="hidden"  id="car_id" value="' . $car_id .'" class="form-control">
                                             </div>
                                         </div>
-
+                                    </div>
                                 </div>
                             </div>
-                            
                         </div>
                         <div class="col-lg-12 mt-3" style="text-align:right;">
                             <a href="javascript:void(0)" onclick="hideBookingPopup()" class="btn btn-danger">Cancel</a>
