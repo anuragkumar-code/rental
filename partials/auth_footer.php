@@ -36,7 +36,7 @@
                 </form>
             </div>
             <div class="modal-footer loginInfo d-none">
-                <button type="button"  id="closeButton" class="btn btn-info" onclick="hideLoginPopup()">Close</button>
+                <button type="button"  id="closeButton" class="btn btn-info" onclick="hideLoginPopup()" style="font-weight: 800;">Close</button>
                 <a href="javascript:void(0)" class="btn-main" onclick="login()" id="loginButton">Log In</a>
             </div>
         </div>
@@ -136,9 +136,32 @@
     </div>
 </div>
 
+<!-- <div id="loader" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div> -->
+
+<div id="pageOverlay" style="display: none;"></div>
+
 
 
 <style>
+
+
+
+
+
+#pageOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Faded effect */
+    z-index: 9999; /* Ensure it's on top of all elements */
+    pointer-events: none; /* Disable interactions */
+}
     .radio-img {
         display: inline-block;
         text-align: center;
@@ -184,61 +207,72 @@
 </style>
 
 <script>
-    function login(){
-        var email = $('#email').val();
-        var password = $('#password').val();
-        var userType = $('#customerType').val();
-        
-        if(userType == ''){
-            toastr.error('Something went wrong! Not able to verify you.');
-            return;
-        }
 
-        if (email == '') {
-            toastr.error('Please enter your email address.');
-            return;
-        } else if (!validateEmail(email)) {
-            toastr.error('Please enter a valid email address.');
-            return;
-        }
-        
-        if (password == '') {
-            toastr.error('Please enter your password.');
-            return;
-        } else if (password.length < 6) {
-            toastr.error('Password must be at least 6 characters long.');
-            return;
-        }
-        
-        var request = (userType === 'owner') ? 'login@rental' : 'login_renter@rental';
 
-        var data = {
-            email: email,
-            password: password,
-            userType: request,
-        };
-        
-        
-        $.ajax({
-            type: 'POST',
-            url: 'functions/login.php',
-            data: data,
-            success: function (response) {
-                var result = JSON.parse(response);
+function login() {
+    var email = $('#email').val();
+    var password = $('#password').val();
+    var userType = $('#customerType').val();
 
-                if (result.status) {
-                    toastr.success(result.message);
-                    window.location.href = result.redirect_url; 
-                } else {
-                    toastr.error(result.message);
-                }
-                
-            },
-            error: function() {
-                toastr.error('An error occurred during registration. Please try again!');
-            }
-        });
+    if (userType == '') {
+        toastr.error('Something went wrong! Not able to verify you.');
+        return;
     }
+
+    if (email == '') {
+        toastr.error('Please enter your email address.');
+        return;
+    } else if (!validateEmail(email)) {
+        toastr.error('Please enter a valid email address.');
+        return;
+    }
+
+    if (password == '') {
+        toastr.error('Please enter your password.');
+        return;
+    } else if (password.length < 6) {
+        toastr.error('Password must be at least 6 characters long.');
+        return;
+    }
+
+    var request = (userType === 'owner') ? 'login@rental' : 'login_renter@rental';
+
+    var data = {
+        email: email,
+        password: password,
+        userType: request,
+    };
+
+    
+    $('#pageOverlay').css({
+        display: 'block',
+        pointerEvents: 'all' 
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: 'functions/login.php',
+        data: data,
+        success: function (response) {
+            var result = JSON.parse(response);
+
+            if (result.status) {
+                toastr.success(result.message);
+                window.location.href = result.redirect_url;
+            } else {
+                toastr.error(result.message);
+            }
+        },
+        error: function () {
+            toastr.error('An error occurred during registration. Please try again!');
+        },
+        complete: function () {
+            // Hide the overlay after the AJAX request is complete
+            $('#pageOverlay').css('display', 'none');
+        }
+    });
+}
+
     
     function validateEmail(email) {
         var re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -328,6 +362,11 @@
         data.request = userType === 'owner' ? 'register_customer@rental' : 'register_renter@rental';
         
         console.log(data);
+
+         $('#pageOverlay').css({
+        display: 'block',
+        pointerEvents: 'all' 
+    });
         // return;
         $.ajax({
             type: 'POST',
@@ -366,7 +405,7 @@
     }
 
     function loadRegisterForm(type){
-
+       
         if(type == ''){
             $('#userType').val('');
             $('#customerTypeDiv').removeClass('d-none');
@@ -388,6 +427,11 @@
             $('#terms-condition').removeClass('d-none');
         }
 
+        if(type == 'owner'){
+            $('#addressDetails').addClass('d-none');
+            $('#terms-condition').addClass('d-none');
+        }
+ 
         $('#registerButton').removeClass('d-none');
         $('#personalInfo').removeClass('d-none');
         $('#customerTypeDiv').addClass('d-none');
