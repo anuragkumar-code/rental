@@ -2,13 +2,8 @@
 
 <?php
 
-// Fetch renter_id from session
 $user_id = $_SESSION['user_id']; 
-
 $image = '../assets/images/profile/default.jpg';
-
-// API request to get renter profile data
-
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
@@ -31,18 +26,17 @@ curl_setopt_array($curl, array(
 $response = curl_exec($curl);
 
 curl_close($curl);
-// echo $response;
 
- $data = json_decode($response, true);
+$data = json_decode($response, true);
  
- $fetch = $data['response'][0]['data'];
+$fetch = $data['response'][0]['data'];
  
  
-  if ($fetch) {
-            $name = htmlspecialchars($fetch['name']);
-            $email = htmlspecialchars($fetch['email']);
-            $image = htmlspecialchars($fetch['image']);
-        }
+if ($fetch) {
+    $name = htmlspecialchars($fetch['name']);
+    $email = htmlspecialchars($fetch['email']);
+    $image = htmlspecialchars($fetch['image']);
+}
  
 
 ?>
@@ -134,91 +128,87 @@ curl_close($curl);
 
 <style>
     .profile_img {
-    position: relative;
-    display: inline-block;
-}
+        position: relative;
+        display: inline-block;
+    }
 
-.profile_img img {
-    width: 100%;
-    height: auto;
-    border-radius: 50%; /* Optional: makes the image circular */
-}
+    .profile_img img {
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
+    }
 
-.profile_img .edit-icon {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background-color: #ffffff; /* Background color for the pencil icon */
-    color: #333; /* Color of the pencil icon */
-    padding: 5px;
-    border-radius: 50%;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
+    .profile_img .edit-icon {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: #ffffff;
+        color: #333; 
+        padding: 5px;
+        border-radius: 50%;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
 
-.profile_img .edit-icon:hover {
-    background-color: #f0f0f0; /* Optional: slight change on hover */
-}
+    .profile_img .edit-icon:hover {
+        background-color: #f0f0f0; 
+    }
 
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    justify-content: center;
-    align-items: center;
-}
+    .modal {
+        display: none; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        justify-content: center;
+        align-items: center;
+    }
 
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 350px;
-    position: relative;
-    text-align: center;
-}
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 350px;
+        position: relative;
+        text-align: center;
+    }
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-}
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-#profileImage {
-    padding: 10px;
-    display: block;
-    margin: auto;
-}
+    #profileImage {
+        padding: 10px;
+        display: block;
+        margin: auto;
+    }
 </style>
-
-
 
 
 <script>
 
-function openModal() {
-    document.getElementById("editModal").style.display = "flex";
-}
+    function openModal() {
+        document.getElementById("editModal").style.display = "flex";
+    }
 
-function closeModal() {
-    document.getElementById("editModal").style.display = "none";
-}
+    function closeModal() {
+        document.getElementById("editModal").style.display = "none";
+    }
 
     setTimeout(()=>{
         loadProfile()
     },500);
 
     function loadProfile(){
-        
         var user_id = "<?php echo $_SESSION['user_id']; ?>";
-        
         $.ajax({
             url: 'pages/ajax_profile.php',
             method: 'POST',
@@ -241,8 +231,7 @@ function closeModal() {
     }
 
     function loadBank(){
-        
-         var user_id = "<?php echo $_SESSION['user_id']; ?>";
+        var user_id = "<?php echo $_SESSION['user_id']; ?>";
         $.ajax({
             url: 'pages/ajax_bank.php',
             method: 'POST',
@@ -265,8 +254,7 @@ function closeModal() {
     }
 
     function loadHistory(){
-        
-         var user_id = "<?php echo $_SESSION['user_id']; ?>";
+        var user_id = "<?php echo $_SESSION['user_id']; ?>";
         
         $.ajax({
             url: 'pages/ajax_history.php',
@@ -315,7 +303,6 @@ function closeModal() {
                 booking_id : booking_id
             },
             success: function(response) {
-               
                 
             },
             error: function() {
@@ -326,23 +313,16 @@ function closeModal() {
     
     
     $(document).ready(function() {
-        loadProfile(); // Load profile on page load
+        loadProfile(); 
     });
-
     
-    // UPDATE OWNER PROFILE CODE
-    
-     function updateData(){
+    function updateData(){
             let formData = new FormData();
             formData.append('user_id', "<?php echo $_SESSION['user_id']; ?>");
             formData.append('name', $('#name').val());
             formData.append('email', $('#email_address').val());
             formData.append('contact', $('#contact').val());
            
-
-                
-           
-
             $.ajax({
                 url: 'functions/profile/edit_owner.php',
                 type: 'POST',
@@ -351,9 +331,6 @@ function closeModal() {
                 contentType: false,
                 success: function (result) {
                    
-                    
-                    // jsonreturn;
-                    
                     var fetch = JSON.parse(result);
                      console.log(fetch); 
                     
@@ -377,70 +354,42 @@ function closeModal() {
     }
     
     
-     
-    // UPDATE OWNER PROFILE IMAGE CODE
+    function SaveProfileImage(){
+        let formData = new FormData();
+        
+        formData.append('user_id', "<?php echo $_SESSION['user_id']; ?>");
+        const imageFile = document.getElementById('profileImage').files[0];
     
-    
-       function SaveProfileImage(){
-            let formData = new FormData();
-            formData.append('user_id', "<?php echo $_SESSION['user_id']; ?>");
-             const imageFile = document.getElementById('profileImage').files[0];
-    
-    // Check if an image file is selected before appending
-    if (imageFile) {
-        formData.append('profile_image', imageFile); // 'image' is the key for the uploaded file
-    } else {
-        // Show a simple alert if no image is selected
-        alert("No image selected. Please select an image first.");
-        return; // Exit the function if no image is selected
-    }
-          
-             
-            //   console.log("FormData ready to submit:", formData);
-            //   return;
-           
+        if (imageFile) {
+            formData.append('profile_image', imageFile); 
+        } else {
+            alert("No image selected. Please select an image first.");
+            return; 
+        }
 
-            $.ajax({
-                url: 'functions/profile/edit_profile_image.php',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (abc) {
-                   
-                    
-                    // jsonreturn;
-                    
-                    var fetch = JSON.parse(abc);
-                    //  console.log(fetch); 
-                    //  return;
-                    
-                    if (fetch.response[0].status == true) {
+        $.ajax({
+            url: 'functions/profile/edit_profile_image.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (abc) {
+                var fetch = JSON.parse(abc);
+                if (fetch.response[0].status == true) {
+                    toastr.success('Profile image has been updated!')
+                    // loadProfile();
+                    location.reload();
+                }else {
+                    toastr.error('An error occurred during profile image update. Please try again!');
+                    $('#editModal').modal('hide'); 
+                    $('#profileImage').val(''); 
                         
-                        toastr.success('Profile image has been updated!')
-                        // loadProfile();
-                        location.reload();
-                        
-                    }
-                        else {
-                            toastr.error('An error occurred during profile image update. Please try again!');
-                            
-                            $('#editModal').modal('hide'); 
-    
-    
-                             $('#profileImage').val(''); 
-                            
-                        }
-
-                   
-                    // alert('Profile updated successfully!');
-                     
-                },
-                error: function () {
-                    
-                     toastr.error('An error occurred while profile image update. Please try again!');
                 }
-            });
+            },
+            error: function () {
+                toastr.error('An error occurred while profile image update. Please try again!');
+            }
+        });
         
     }
     

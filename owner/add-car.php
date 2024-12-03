@@ -54,9 +54,11 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="car_type">Car Type</label>
-                        <input type="text" id="car_type" name="car_type" class="form-control" placeholder="Sedan, SUV, etc.">
-                        <p id="typeError" class="d-none text-danger errorClass">Please enter car type</p>
+                        <label for="car_type">Car Category</label>
+                        <select id="car_type" name="car_type" class="form-select" required>
+                            <option value="">Select car category</option>
+                        </select>
+                        <p id="typeError" class="d-none text-danger errorClass">Please select car category</p>
                     </div>
                 </div>
 
@@ -79,7 +81,16 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="seats">No of Seats</label>
-                        <input type="text" id="seats" name="seats" class="form-control" placeholder="Enter No. of Seats">
+                        <select id="seats" name="seats" class="form-select" required>
+                            <option selected disabled>Select car seats</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
                         <p id="seatsError" class="d-none text-danger errorClass">Please enter number of seats</p>
                     </div>
                 </div>
@@ -312,10 +323,38 @@
             }
         });
     }
+
+    function get_categories(){
+        $.ajax({
+            type: 'POST',
+            url: 'functions/cars/get-categories.php',
+            data: {
+                
+            },
+            success: function(response) {
+                
+                const data = JSON.parse(response);
+                const categories = data.response[0].data;
+            
+                const getCategories = $('#car_type');
+                getCategories.empty(); 
+                getCategories.append('<option selected disabled>Select Car Category</option>');
+
+                categories.forEach((category) => {
+                    getCategories.append(`<option value="${category.brands}">${category.brands}</option>`);
+                });
+                
+            },
+            error: function() {
+                alert('An error occurred while brands.');
+            }
+        });
+    }
     
 
     setTimeout(()=>{
         get_brands(); 
+        get_categories();
     },300);
 </script>
 
