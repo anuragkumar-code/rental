@@ -231,13 +231,13 @@ if ($fetch) {
     }
 
     function loadBank(){
-        var user_id = "<?php echo $_SESSION['user_id']; ?>";
+        var owner_id = "<?php echo $_SESSION['user_id']; ?>";
         $.ajax({
             url: 'pages/ajax_bank.php',
             method: 'POST',
             data: {
                 
-                  user_id : user_id
+                  owner_id : owner_id
             },
             success: function(response) {
                 $('.customClass').removeClass('active');
@@ -249,6 +249,46 @@ if ($fetch) {
             },
             error: function() {
                 toastr.error('<b>An error occurred while processing your request. Please try again.</b>');
+            }
+        });
+    }
+
+    function updateBank(owner_id){
+
+        var holder_name = $('#account_holder_name').val();
+        var bank_name = $('#bank_name').val();
+        var routing_number = $('#routing_number').val();
+        var account_number = $('#account_number').val();
+
+        $('#updateBankBtn').prop('disabled', true).text('Updating...');
+
+        $.ajax({
+            url: 'functions/profile/ajax_bank.php',
+            method: 'POST',
+            data: {
+                owner_id : owner_id,
+                holder_name : holder_name,
+                bank_name : bank_name,
+                routing_number : routing_number,
+                account_number : account_number
+            },
+            success: function (response) {
+                try {
+                    var res = JSON.parse(response);
+                    if (res.response[0].status) {
+                        toastr.success(res.response[0].msg || 'Bank details updated successfully!');
+                    } else {
+                        toastr.error(res.response[0].msg || 'Failed to update bank details.');
+                    }
+                } catch (error) {
+                    toastr.error('An unexpected error occurred. Please try again.');
+                }
+            },
+            error: function() {
+                toastr.error('<b>An error occurred while processing your request. Please try again.</b>');
+            },
+            complete: function () {
+                $('#updateBankBtn').prop('disabled', false).text('Update');
             }
         });
     }
