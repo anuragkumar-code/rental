@@ -363,11 +363,11 @@ function login() {
         
         console.log(data);
 
-         $('#pageOverlay').css({
-        display: 'block',
-        pointerEvents: 'all' 
-    });
-        // return;
+        $('#pageOverlay').css({
+            display: 'block',
+            pointerEvents: 'all' 
+        });
+
         $.ajax({
             type: 'POST',
             url: 'functions/registration.php',

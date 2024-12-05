@@ -257,8 +257,35 @@ if ($fetch) {
 
         var holder_name = $('#account_holder_name').val();
         var bank_name = $('#bank_name').val();
+        var bank_code = $('#bank_code').val();
         var routing_number = $('#routing_number').val();
         var account_number = $('#account_number').val();
+
+        if (bank_name == '') {
+            toastr.error('Please enter bank name.');
+            return;
+        }
+
+        if (bank_code == '') {
+            toastr.error('Please enter bank code.');
+            return;
+        }
+
+        if (account_number == '') {
+            toastr.error('Please enter bank account number.');
+            return;
+        }
+
+        if (routing_number == '') {
+            toastr.error('Please enter routing number.');
+            return;
+        }
+
+        if (account_number == '') {
+            toastr.error('Please enter bank account holder name.');
+            return;
+        }
+
 
         $('#updateBankBtn').prop('disabled', true).text('Updating...');
 
@@ -269,6 +296,7 @@ if ($fetch) {
                 owner_id : owner_id,
                 holder_name : holder_name,
                 bank_name : bank_name,
+                bank_code : bank_code,
                 routing_number : routing_number,
                 account_number : account_number
             },

@@ -91,19 +91,22 @@
         });
     }
 
+
     function renderBrands(brands) {
         const brandsContainer = document.getElementById('brands_filter');
-        brandsContainer.innerHTML = ''; 
+        brandsContainer.innerHTML = '';
 
         brands.forEach((brand, index) => {
             const checkboxHTML = `
                 <div class="de_checkbox">
-                    <input id="brand_${index}" name="brand" type="checkbox" value="${brand.brands}">
+                    <input id="brand_${index}" class="brand_chkbox" name="brand" type="checkbox" value="${brand.brands}">
                     <label for="brand_${index}">${brand.brands}</label>
                 </div>
             `;
             brandsContainer.insertAdjacentHTML('beforeend', checkboxHTML);
         });
+
+        attachCheckboxListeners();
     }
 
     function get_categories() {
@@ -133,21 +136,19 @@
 
     function renderCategories(categories) {
         const categoryContainer = document.getElementById('category_filter');
-        categoryContainer.innerHTML = ''; 
+        categoryContainer.innerHTML = '';
 
         categories.forEach((category, index) => {
             const checkboxHTML = `
                 <div class="de_checkbox">
-                    <input 
-                        id="car_body_type_${index}" 
-                        name="car_body_type" 
-                        type="checkbox" 
-                        value="${category.brands}">
+                    <input id="car_body_type_${index}" class="category_chkbox" name="car_body_type" type="checkbox" value="${category.brands}">
                     <label for="car_body_type_${index}">${category.brands}</label>
                 </div>
             `;
             categoryContainer.insertAdjacentHTML('beforeend', checkboxHTML);
         });
+
+        attachCheckboxListeners();
     }
 
 
@@ -229,9 +230,7 @@
         });
     }
 
-
-    function paginate(category, brand, from_date, to_date, price_from, price_to) {
-
+    function paginate(categories, brands, from_date = null, to_date = null, price_from = null, price_to = null) {
         const carListData = localStorage.getItem('carList');
 
         if (!carListData) {
@@ -242,17 +241,24 @@
         const carList = JSON.parse(carListData);
 
         const filteredCars = carList.filter((car) => {
-            const matchesCategory = category ? car.cat_name.toLowerCase() === category.toLowerCase() : true;
-            const matchesBrand = brand ? car.brand.toLowerCase() === brand.toLowerCase() : true;
-            const matchesPrice = price_from || price_to ? car.price >= (price_from || 0) && car.price <= (price_to || Infinity) : true;
+            const matchesCategory = categories.length
+                ? categories.includes(car.cat_name.toLowerCase())
+                : true;
 
-            const matchesDateRange = from_date && to_date ? true : true;
+            const matchesBrand = brands.length
+                ? brands.includes(car.brand.toLowerCase())
+                : true;
+
+            const matchesPrice = (price_from || price_to)
+                ? car.price >= (price_from || 0) && car.price <= (price_to || Infinity)
+                : true;
+
+            const matchesDateRange = true;
 
             return matchesCategory && matchesBrand && matchesPrice && matchesDateRange;
         });
 
         renderCarList(filteredCars);
-
     }
 
     function renderCarList(carList) {
@@ -303,7 +309,7 @@
         get_categories();
     },100);
 
-    document.querySelectorAll('input[name="car_brand"]').forEach((checkbox) => {
+    document.querySelectorAll('.brand_chkbox').forEach((checkbox) => {
         checkbox.addEventListener('change', function () {
             const selectedBrands = getSelectedBrands();
             const selectedCategories = getSelectedCategories();
@@ -312,7 +318,7 @@
         });
     });
 
-    document.querySelectorAll('input[name="car_body_type"]').forEach((checkbox) => {
+    document.querySelectorAll('.category_chkbox').forEach((checkbox) => {
         checkbox.addEventListener('change', function () {
             const selectedBrands = getSelectedBrands();
             const selectedCategories = getSelectedCategories();
@@ -323,19 +329,43 @@
 
     function getSelectedBrands() {
         const selectedBrands = [];
-        document.querySelectorAll('input[name="car_brand"]:checked').forEach((checkbox) => {
-            selectedBrands.push(checkbox.value);
+        document.querySelectorAll('.brand_chkbox:checked').forEach((checkbox) => {
+            selectedBrands.push(checkbox.value.toLowerCase());
         });
         return selectedBrands;
     }
 
     function getSelectedCategories() {
         const selectedCategories = [];
-        document.querySelectorAll('input[name="car_body_type"]:checked').forEach((checkbox) => {
-            selectedCategories.push(checkbox.value);
+        document.querySelectorAll('.category_chkbox:checked').forEach((checkbox) => {
+            selectedCategories.push(checkbox.value.toLowerCase());
         });
         return selectedCategories;
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        renderCategories(categoriesResponse);
+        renderBrands(brandsResponse);
+        attachCheckboxListeners();
+    });
+
+    function attachCheckboxListeners() {
+        document.querySelectorAll('.brand_chkbox').forEach((checkbox) => {
+            checkbox.addEventListener('change', handleCheckboxChange);
+        });
+
+        document.querySelectorAll('.category_chkbox').forEach((checkbox) => {
+            checkbox.addEventListener('change', handleCheckboxChange);
+        });
+    }
+
+    function handleCheckboxChange() {
+        const selectedBrands = getSelectedBrands();
+        const selectedCategories = getSelectedCategories();
+
+        paginate(selectedCategories, selectedBrands);
+    }
+
 </script>
 
 <?php include ('partials/customer-footer.php'); ?>
