@@ -6,8 +6,8 @@
                 <button type="button" class="btn-close" onclick="hideLoginPopup()" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="loginForm" method="post" action="" onsubmit="return validateForm()">
-                    <div class="row mb-12" id="customerTypeDiv">
+                <form id="login_form" method="post">
+                    <div class="row mb-12">
                         <div class="col-md-12" style="text-align: center;">
                             <label class="radio-img" style="display: inline-block; margin: 20px; text-align: center;">
                                 <input type="radio" name="userType" value="customer" onchange="loadLoginForm(this.value)">
@@ -24,14 +24,14 @@
                     </div>
                     <div class="loginInfo d-none">   
                         <div class="form-group mb-3">
-                            <label for="email"><b>Email address</b></label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                            <label for="login_email"><b>Email address</b></label>
+                            <input type="email" class="form-control" id="login_email" name="login_email" placeholder="Enter email" required>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="password"><b>Password</b></label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                            <label for="login_password"><b>Password</b></label>
+                            <input type="password" class="form-control" id="login_password" name="login_password" placeholder="Enter password" required>
                         </div>
-                       <input type="hidden" name="customerType" id="customerType">
+                       <input type="hidden" name="login_user_type" id="login_user_type">
                     </div>
                 </form>
             </div>
@@ -126,7 +126,9 @@
                     </a>
                 </label>
             </div>
-            <input type="hidden" name="register_customer_type" id="register_customer_type">
+            <input type="hidden" id="register_user_type">
+            <input type="hidden" id="register_user_lat">
+            <input type="hidden" id="register_user_long">
         </form>
     </div>
     <div class="offcanvas-footer" style="justify-content: space-between;">
@@ -135,19 +137,38 @@
     </div>
 </div>
 
-<div id="pageOverlay" style="display: none;"></div>
+<div id="pageOverlay"></div>
 
 <style>
     #pageOverlay {
+        display: none; 
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5); 
-        z-index: 9999; 
-        pointer-events: none; 
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        pointer-events: none;
     }
+
+    #pageOverlay.active {
+        display: block;
+        animation: pulse 1.5s infinite; 
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 0.8;
+        }
+        100% {
+            opacity: 0.5;
+        }
+    }
+
     .radio-img {
         display: inline-block;
         text-align: center;
@@ -193,19 +214,24 @@
 </style>
 
 <script>
+    $(document).ready(function () {
+        getAndStoreLocation();
+    });
 
     function login() {
-        var email = $('#email').val();
-        var password = $('#password').val();
-        var userType = $('#customerType').val();
+        var email = $('#login_email').val();
+        var password = $('#login_password').val();
+        var userType = $('#login_user_type').val();
 
         if (userType == '') {
             toastr.error('Something went wrong! Not able to verify you.');
-            return;
+            setTimeout(()=>{
+                window.location.reload();
+            },300);
         }
 
         if (email == '') {
-            toastr.error('Please enter your email address.');
+            toastr.error('Please enter email address.');
             return;
         } else if (!validateEmail(email)) {
             toastr.error('Please enter a valid email address.');
@@ -229,10 +255,7 @@
         };
 
         
-        $('#pageOverlay').css({
-            display: 'block',
-            pointerEvents: 'all' 
-        });
+        $('#pageOverlay').css({ display: 'block', pointerEvents: 'all' });
 
         $.ajax({
             type: 'POST',
@@ -249,10 +272,9 @@
                 }
             },
             error: function () {
-                toastr.error('An error occurred during registration. Please try again!');
+                toastr.error('An error occurred during login. Please try again!');
             },
             complete: function () {
-                // Hide the overlay after the AJAX request is complete
                 $('#pageOverlay').css('display', 'none');
             }
         });
@@ -265,12 +287,21 @@
 
 
     function registerUser() {
-        var user_type = $('#register_customer_type').val();
+
+        if (!$('#register_terms').is(':checked')) {
+            toastr.error("You must agree to the terms and conditions.");
+            return;
+        }
+
+        var user_type = $('#register_user_type').val();
 
         var name = $('#register_name').val();
         var email = $('#register_email').val();
         var contact = $('#register_contact').val();
         var password = $('#register_password').val();
+
+        var lat = $('#register_user_lat').val();
+        var long = $('#register_user_long').val();
 
         var house = null;
         var street = null;
@@ -279,13 +310,11 @@
         var zip = null;
 
         if(user_type == "customer"){
-
             house = $('#register_house').val();
             street = $('#register_street').val();
             city = $('#register_city').val();
             state = $('#register_state').val();
             zip = $('#register_zip').val();
-
         }
           
         if (name == '') {
@@ -341,6 +370,8 @@
             email: email,
             contact: contact,
             password: password,
+            lat: lat,
+            lng: long
         };
 
         if (user_type === 'customer') {
@@ -349,20 +380,11 @@
             data.city = city;
             data.state = state;
             data.zip_code = zip;
-            // data.lat = '1';
-            // data.lng = '1';
         }
 
         data.request = user_type === 'owner' ? 'register_customer@rental' : 'register_renter@rental';
         
-        console.log(data);
-
-        return;
-
-        $('#pageOverlay').css({
-            display: 'block',
-            pointerEvents: 'all' 
-        });
+        $('#pageOverlay').addClass('active');
 
         $.ajax({
             type: 'POST',
@@ -370,31 +392,29 @@
             data: data,
             success: function (response) {
                 var jsonResponse = JSON.parse(response);
-                
-                console.log(jsonResponse);
-                
-                var resData = jsonResponse.response[0];
 
-                if (resData.status) {
-                    var userData = resData.data;
-                    var message = 'Registration successful! Welcome, ' + userData.name + '.';
-                        
-                    toastr.success(message);
-
+                if (jsonResponse.response[0].status) {
+                    toastr.success('Registration successful!');
                     hideRegisterOffcanvas(); 
                 } else {
-                   var error_message = 'Registration failed: ' + resData.msg;
-                    toastr.error(error_message);
+                    $('#pageOverlay').removeClass('active');
+                    toastr.error('Registration failed: ' + jsonResponse.response[0].msg);
                 }
-                
             },
-            error: function() {
+            error: function () {
+                $('#pageOverlay').removeClass('active');
+                
                 toastr.error('An error occurred during registration. Please try again!');
-            }
+            },
+            complete: function () {
+                $('#pageOverlay').removeClass('active');
+            },
         });
     }
 
     function loadRegisterForm(type){
+
+        getAndStoreLocation();
 
         $("#register_form").find("input, select, textarea").each(function() {
             if (this.type === "radio") {
@@ -409,10 +429,12 @@
         $('#personal_info_div').removeClass('d-none');
 
         $('#register_button').removeClass('d-none');
-        $('#customerTypeDiv').addClass('d-none');
         $('#register_back_btn').removeClass('d-none');
         $('#terms_condition_div').removeClass('d-none');
         
+        var lat = getCookie('user_lat') || null;
+        var lng = getCookie('user_lng') || null;
+
         if(type == 'customer'){
             $('#address_details_div').removeClass('d-none');
         }
@@ -421,11 +443,19 @@
             $('#address_details_div').addClass('d-none');
         }
 
-        $('#register_customer_type').val(type);
+        $('#register_user_lat').val(lat);
+        $('#register_user_long').val(lng);
+        $('#register_user_type').val(type);
  
     }
 
     function showRegisterOffcanvas() {
+        $('#personal_info_div').addClass('d-none');
+        $('#address_details_div').addClass('d-none');
+        $('#terms_condition_div').addClass('d-none');
+        $('#register_button').addClass('d-none');
+        
+        $("#register_form").trigger("reset");
         $('#registerOffcanvas').offcanvas('show'); 
     }
 
@@ -434,6 +464,11 @@
     }
 
     function showLoginPopup(){
+
+        $('#login_form').trigger("reset");
+        $('#loginButton').addClass('d-none');
+        $('.loginInfo').addClass('d-none');
+
         $('#loginPopup').modal('show');
     }
 
@@ -444,10 +479,57 @@
     
     function loadLoginForm(type){
         $('.loginInfo').removeClass('d-none');
-        $('#customerType').val('');
-        $('#customerType').val(type);
+        $('#loginButton').removeClass('d-none');
+
+        $('#login_user_type').val('');
+        $('#login_user_type').val(type);
 
     }
+
+
+    //below functions are only for geolocation
+
+    function getAndStoreLocation() {
+        let lat = getCookie('user_lat');
+        let lng = getCookie('user_lng');
+
+        if (lat && lng) {
+            return; 
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    lat = position.coords.latitude;
+                    lng = position.coords.longitude;
+                    setCookie('user_lat', lat, 7); 
+                    setCookie('user_lng', lng, 7);
+
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); 
+        document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+    }
+
+    function getCookie(name) {
+        const cookies = document.cookie.split('; ');
+        for (let i = 0; i < cookies.length; i++) {
+            const [key, value] = cookies[i].split('=');
+            if (key === name) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+
 
 
 </script>
