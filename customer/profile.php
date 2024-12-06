@@ -244,7 +244,7 @@ function closeModal() {
             method: 'POST',
             data: {
                 
-                 renter_id : renter_id
+                 renter_id : renter_id,
             },
             success: function(response) {
                 $('.customClass').removeClass('active');

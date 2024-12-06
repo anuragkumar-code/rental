@@ -5,7 +5,7 @@ $email = $_POST['email'];
 $contact = $_POST['contact'];
 $password = $_POST['password'];
 $request = $_POST['request'];
-$token = $_POST['token'];
+// $token = $_POST['token'];
 $api_url = 'https://alliedtechnologies.cloud/clients/whips/api/v1/auth.php';
 $api_auth_bearer = 'Bearer e37834b4b0119181b399479527013ab1a206ca8326e23cea4427aacc3ce709a0';
 

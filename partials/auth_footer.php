@@ -363,22 +363,24 @@ function login() {
         
         console.log(data);
 
-         $('#pageOverlay').css({
-        display: 'block',
-        pointerEvents: 'all' 
-    });
+    //      $('#pageOverlay').css({
+    //     display: 'block',
+    //     pointerEvents: 'all' 
+    // });
         // return;
         $.ajax({
             type: 'POST',
             url: 'functions/registration.php',
             data: data,
             success: function (response) {
-                var jsonResponse = JSON.parse(response);
-                
+                var jsonResponse = response;
+                  // console.log("Raw response:", response);
                 console.log(jsonResponse);
-                
+                // return;
                 var resData = jsonResponse.response[0];
-
+                    
+                  console.log (resData);
+                  return; 
                 if (resData.status) {
                     var userData = resData.data;
                     var message = 'Registration successful! Welcome, ' + userData.name + '.';

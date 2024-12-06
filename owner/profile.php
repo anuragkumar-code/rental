@@ -97,7 +97,7 @@ if ($fetch) {
                     <ul class="menu-col">
                         <li><a href="javascript:void(0)" onclick="loadProfile()" class="active customClass" id="personalTab"><i class="fa fa-user"></i>Personal Details</a></li>
                         <li><a href="javascript:void(0)" onclick="loadBank()" class="customClass" id="bankTab"><i class="fa fa-calendar"></i>Bank Details</a></li>
-                        <li><a href="javascript:void(0)" onclick="loadBookings()" class="customClass" id="bookingTab"><i class="fa fa-car"></i>Bookings Request</a></li>
+                        <!-- <li><a href="javascript:void(0)" onclick="loadBookings()" class="customClass" id="bookingTab"><i class="fa fa-car"></i>Bookings Request</a></li> -->
                         <li><a href="javascript:void(0)" onclick="loadHistory()" class="customClass" id="historyTab"><i class="fa fa-car"></i>Booking History</a></li>
                     </ul>
                 </div>
@@ -296,13 +296,14 @@ if ($fetch) {
     function loadHistory(){
         var user_id = "<?php echo $_SESSION['user_id']; ?>";
         
-        $.ajax({
-            url: 'pages/ajax_history.php',
-            method: 'POST',
-            data: {
-                
-                  user_id : user_id
-            },
+            $.ajax({
+                url: 'pages/ajax_history.php',
+                method: 'POST',
+                data: {
+                    
+                    user_id : user_id,
+
+                },
             success: function(response) {
                 $('.customClass').removeClass('active');
                 $('#historyTab').addClass('active');
@@ -317,22 +318,22 @@ if ($fetch) {
         });
     }
 
-    function loadBookings(){
-        $.ajax({
-            url: 'pages/ajax_bookings.php',
-            method: 'POST',
-            success: function(response) {
-                $('.customClass').removeClass('active');
-                $('#bookingTab').addClass('active');
-                $('#mainDiv').html('');
-                $('#mainDiv').html(response);
+    // function loadBookings(){
+    //     $.ajax({
+    //         url: 'pages/ajax_bookings.php',
+    //         method: 'POST',
+    //         success: function(response) {
+    //             $('.customClass').removeClass('active');
+    //             $('#bookingTab').addClass('active');
+    //             $('#mainDiv').html('');
+    //             $('#mainDiv').html(response);
                 
-            },
-            error: function() {
-                toastr.error('<b>An error occurred while processing your request. Please try again.</b>');
-            }
-        });
-    }
+    //         },
+    //         error: function() {
+    //             toastr.error('<b>An error occurred while processing your request. Please try again.</b>');
+    //         }
+    //     });
+    // }
 
     function update_booking(booking_id,status){
         $.ajax({
