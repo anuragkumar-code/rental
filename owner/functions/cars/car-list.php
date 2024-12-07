@@ -31,7 +31,6 @@ curl_close($curl);
 
 $response_data = json_decode($response, true);
 
-// echo "<pre>";print_r($response_data); exit;
 if ($response_data['response'][0]['status'] === true && !empty($response_data['response'][0]['data']['car_list'])) {
     $car_data = $response_data['response'][0]['data']['car_list'];
     
@@ -73,6 +72,14 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
     $html .= '    </div>';
     $html .= '</div>';
     }
+
+    $html .= '<div class="col-lg-12">';
+    $html .= '    <div class="alert alert-warning text-center">';
+    $html .= '        <h4>Want to add more cars...?</h4>';
+    $html .= '        <p>Click on below button and add a new car to rent now.</p>';
+    $html .= '        <a class="btn btn-primary" href="../owner/add-car.php">List a New Car</a>';
+    $html .= '    </div>';
+    $html .= '</div>';
 
     echo $html;
 } else {

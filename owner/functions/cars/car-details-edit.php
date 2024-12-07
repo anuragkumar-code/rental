@@ -1,185 +1,179 @@
-<?php
-$curl = curl_init();
-
-$card_id = $_POST['car_id'];
-
-
-curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://alliedtechnologies.cloud/clients/whips/api/v1/renter.php',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS => array('request' => 'single_car_details', 'car_id' => $card_id),
-    CURLOPT_HTTPHEADER => array(
-        'token: 1245',
-        'Authorization: Bearer e37834b4b0119181b399479527013ab1a206ca8326e23cea4427aacc3ce709a0',
-        'Cookie: PHPSESSID=ooa60ppb0fg5mc8s7cuvkcm7cg'
-    ),
-));
-
-$response = curl_exec($curl);
-curl_close($curl);
-
-$response_data = json_decode($response, true);
-
-$html = ''; 
-
-if ($response_data['response'][0]['status'] === true && !empty($response_data['response'][0]['data']['car_details'])) {
-    $car_data = $response_data['response'][0]['data']['car_details'];
-    $car_owner_details = $car_data['owner'];
-    
-      $brand = $car_data['brand'];
-    $model = $car_data['model'];
-    $description = $car_data['desc'];
-    $features = $car_data['features']; 
-    $body = $car_data['cat_name']; 
-    $seats = $car_data['seats'];
-    $doors = $car_data['doors']; 
-    $luggage = $car_data['luggage']; 
-    $fuel_type = $car_data['feul']; 
-    $engine = $car_data['engine'];
-    $mileage = $car_data['mileage']; 
-    $transmission = $car_data['gear']; 
-    $speed =$car_data['speed'];
-    $price =$car_data['price'];
-    $color =$car_data['color'];
-    $number_plate =$car_data['number_plate'];
-    $location =$car_data['loc'];
-    $owner_name =$car_owner_details['name'];
-      $location = !empty($car_data['loc']) ? $car_data['loc'] : 'Not Specified';
-      
-    $html .= '
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6">
-                    <div id="slider-carousel" class="owl-carousel">';
-    
-                        foreach ($car_data['image'] as $img) {
-                            $html .= '<div class="item">
-                                        <img src="' . $img . '" alt="">
-                                      </div>';
-                        }
-
-        $html .= '</div>
-                </div>
-                <div class="col-lg-6">
-                    <h3>' . $car_data['brand'] . ' ' . $car_data['model'] . '</h3>
-                    <p>' . $car_data['desc'] . '</p>
-                    <div class="spacer-30"></div>
-                    <div class="de-box mb25">
-                
-                        <h4>Owned By</h4>
-           
-                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/profile-men-icon.png" alt="Car Type" />&nbsp;'  . $owner_name. '</div>
-                        
-                    </div>
-                   
+<form id="car-registration-form" method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <h3>Edit Car Details</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="brand">Select Brand</label>
+                    <select id="brand" name="brand" class="form-select" required>
+                        <option value="">Select Car Brand</option>
+                    </select>
+                    <p id="brandsError" class="d-none text-danger errorClass">Please select the car brand</p>
                 </div>
             </div>
-
-            <div class="row mt-5">
-                <div class="col-lg-12">
-                    <div class="card" style="border-radius: 10px; background-color: #f8f9fa;">
-                        <div class="card-header">
-                            <h5 class="text-center">Car Specifications</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/cartype-icon.png"  class="new_icon_color_filter" alt="Car Type" /></div>
-                                        <p class="card-text">Vehicle Type <br><strong>'; 
-                                        $html .= isset($body) && $body != '' ? $body : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                    <div class="details-img-icons"><img src="../assets/images/car-detail-icons/seating-capacity.png"  class="new_icon_color_filter" alt="Seating Capacity" /></div>
-                                        <p class="card-text">Seating Capacity <br><strong>'; 
-                                        $html .= isset($seats) && $seats != '' ? $seats : 'Not Specified';$html .= '</strong></p>
-                                      
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/fueltype-icon.png"  class="new_icon_color_filter" alt="Fuel Type" /></div>
-                                        <p class="card-text">Fuel Type <br><strong>' . $fuel_type . '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/engine-icon.png"  class="new_icon_color_filter" alt="Car Engine" /></div>
-                                        <p class="card-text">Engine <br><strong>' . $engine . '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                       <div class="details-img-icons"><img src="../assets/images/car-detail-icons/new_icon.png"  class="" alt="Car Insurance" /></div>
-                                        <p class="card-text">Insurance <br><strong>'; 
-                                        $html .= isset($insurance) && $insurance != '' ? $insurance : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                       <div class="details-img-icons"><img src="../assets/images/car-detail-icons/kms-done.png"   class="new_icon_color_filter"alt="Top Speed" /></div>
-                                        <p class="card-text">Top Speed <br><strong>'; 
-                                        $html .= isset($speed) && $speed != '' ? $speed : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                       <div class="details-img-icons"><img src="../assets/images/car-detail-icons/setting-icon.png"  class="new_icon_color_filter" alt="Transmission " /></div>
-                                        <p class="card-text">Transimission (Gear) <br><strong>'; 
-                                        $html .= isset($transmission) && $transmission != '' ? $transmission : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/number-plate.png"  class="" alt="Number Plate" /></div>
-                                        <p class="card-text">Number Plate <br><strong>'; 
-                                        $html .= isset($number_plate) && $number_plate != '' ? $number_plate : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/rupees-symbol.png"  class="new_icon_color_filter" alt="Car Price" /></div>
-                                        <p class="card-text">Price <br><strong>'; 
-                                        $html .= isset($price) && $price != '' ? $price : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                 <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/exterior-color.png"  class="new_icon_color_filter" alt="Car Color" /></div>
-                                        <p class="card-text">Exterior Color <br><strong>'; 
-                                        $html .= isset($color) && $color != '' ? $color : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                
-                                 <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/location-icon.png"  class="" alt="Car Location" /></div>
-                                        <p class="card-text">Location <br><strong>'; 
-                                        $html .= isset($location) && $location != '' ? $location : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                               
-                               
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="model">Model</label>
+                   <input type="text" id="model" name="model" class="form-control" placeholder="Enter Car Model" value="">
+                    <p id="modelError" class="d-none text-danger errorClass">Please enter the car model</p>
+                    
                 </div>
             </div>
-        </div>';
-  
-   
-
-} else {
-    $html .= '<p>No car details available.</p>';
-}
-
-echo $html;
-?>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="car_name">Car Name</label>
+                    <input type="text" id="car_name" name="car_name" class="form-control" placeholder="Enter car name" value="">
+                    <p id="nameError" class="d-none text-danger errorClass">Please enter car name</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="car_type">Car Type</label>
+                    <input type="text" id="car_type" name="car_type" class="form-control" placeholder="Sedan, SUV, etc." value="">
+                    <p id="typeError" class="d-none text-danger errorClass">Please enter car type</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="engine_specs">Engine Specs</label>
+                    <input type="text" id="engine_specs" name="engine_specs" class="form-control" placeholder="Enter Engine Specs" value="">
+                    <p id="engineError" class="d-none text-danger errorClass">Please enter enginer power</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="car_color">Car Color</label>
+                    <input type="text" id="car_color" name="car_color" class="form-control" placeholder="Enter color" value="">
+                    <p id="colorError" class="d-none text-danger errorClass">Please enter car color</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="seats">No of Seats</label>
+                    <input type="text" id="seats" name="seats" class="form-control" placeholder="Enter No. of Seats" value="">
+                    <p id="seatsError" class="d-none text-danger errorClass">Please enter number of seats</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="speed">Top Speed</label>
+                    <input type="text" id="speed" name="speed" class="form-control" placeholder="Enter Top Speed (miles/hr)" value="">
+                    <p id="speedError" class="d-none text-danger errorClass">Please enter top speed</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="price">Price ($)</label>
+                    <input type="text" id="price" name="price" class="form-control" placeholder="Enter price" value="">
+                    <p id="priceError" class="d-none text-danger errorClass">Please enter price</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="gear_type">Gear/ Transmission </label>
+                    <input type="text" id="gear_type" name="gear_type" class="form-control" placeholder="Enter Transmission" value="">
+                    <p id="gearError" class="d-none text-danger errorClass">Please enter gear/ transmission</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="fuel_type">Fuel Type</label>
+                   <select id="fuel_type" name="fuel_type" class="form-select" required>
+                        <option disabled selected>Select fuel type</option>
+                    </select>
+                    <p id="fuelError" class="d-none text-danger errorClass">Please select fuel type</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea type="text" id="description" name="description" class="form-control" placeholder="Enter description of the car..." ></textarea>
+                    
+                    <p id="descError" class="d-none text-danger errorClass">Please enter description of the car</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="insurance">Insurance</label>
+                    <input type="text" id="insurance" name="insurance" class="form-control" placeholder="Enter Insurance Details" value="">
+                    <p id="insuranceErrors" class="d-none text-danger errorClass">Please enter Insurance details</p>
+                </div>
+            </div>
+             <div class="col-md-4">
+                <div class="form-group">
+                    <label for="number_plate">Number Plate</label>
+                    <input type="text" id="number_plate" name="number_plate" class="form-control" placeholder="Enter Number Plate Details" value="">
+                    <p id="numberplateError" class="d-none text-danger errorClass">Please enter number plate details</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h3>Car Location</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="car_loc">Car Location</label>
+                     <input type="text" id="car_loc" name="car_loc" class="form-control" placeholder="Enter Location of car" value="">
+                    <p id="locationError" class="d-none text-danger errorClass">Please enter Car Location</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="car_lat">Car Latitude</label>
+                    <input type="hidden" id="car_id" name="car_id" class="form-control" value="<?php echo $card_id; ?>">
+                     <input type="text" id="car_lat" name="car_lat" class="form-control" placeholder="Enter Latitude"   pattern="^(\+|-)?([1-8]?\d(\.\d+)?|90(\.0+)?)$" value="">
+                    <p id="latitudeError" class="d-none text-danger errorClass">Please enter latitude</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="car_lng">Car Longitude</label>
+                    <input type="text" id="car_lng" name="car_lng" class="form-control" placeholder="Enter Longitude" pattern="^(\+|-)?(1[0-7]\d(\.\d+)?|[1-9]?\d(\.\d+)?|180(\.0+)?)$" value="">
+                    <p id="longitudeError" class="d-none text-danger errorClass">Please enter longitude</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h3>Car Documents</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="car_insurance">Car Insurance</label>
+                    <input type="file" class="form-control" id="car_insurance" name="car_insurance" />
+                    <p id="insuranceError" class="d-none text-danger errorClass">Please upload car insurance</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="number_plate">Car Number Plate</label>
+                    <input type="file" class="form-control" id="number_plate" name="number_plate" />
+                    <p id="numberPlateError" class="d-none text-danger errorClass">Please upload car number plate</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="ssn">Social Security Number</label>
+                    <input type="text" class="form-control" id="ssn" name="ssn" placeholder="Enter SSN" />
+                    <p id="ssnError" class="d-none text-danger errorClass">Please enter SSN</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h3>Car Images</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="car_images">Car Images</label>
+                    <input type="file" class="form-control" id="car_images" name="car_images[]" multiple />
+                    <p id="imagesError" class="d-none text-danger errorClass">Please upload atleast one image</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-navigation mt-4">
+        <a href="javascript:void(0)" onclick="addCar()" class="btn btn-success">Submit</a>
+    </div>
+</form>
