@@ -4,6 +4,7 @@ $owner_id = $_POST['owner_id'];
 $holder_name = $_POST['holder_name'];
 $routing_number = $_POST['routing_number'];
 $bank_name = $_POST['bank_name'];
+$bank_code = $_POST['bank_code'];
 $account_number = $_POST['account_number'];
 
 
@@ -24,6 +25,7 @@ curl_setopt_array($curl, array(
     'holder_name' => $holder_name,
     'routing_number' => $routing_number,
     'bank_name' => $bank_name,
+    'bank_code' => $bank_code,
     'account_number' => $account_number
  ),
 ));

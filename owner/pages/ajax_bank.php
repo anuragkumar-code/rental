@@ -28,7 +28,8 @@ if (!empty($data['response'][0]['data'])) {
         'bank_name' => '',
         'account_number' => '',
         'routing_number' => '',
-        'holder_name' => ''
+        'holder_name' => '',
+        'bank_code' => ''
     ];
 }
 
@@ -49,6 +50,11 @@ if (!empty($data['response'][0]['data'])) {
                                     <h5>Bank Name</h5>
                                     <input type="text" name="bank_name" id="bank_name" class="form-control" placeholder="Enter bank name" 
                                            value="<?php echo htmlspecialchars($bankDetails['bank_name']); ?>" />
+                                </div>
+                                <div class="col-lg-6 mb20">
+                                    <h5>Bank Code</h5>
+                                    <input type="text" name="bank_code" id="bank_code" class="form-control" placeholder="Enter bank code" 
+                                           value="<?php echo htmlspecialchars($bankDetails['bank_code']); ?>" />
                                 </div>
                                 <div class="col-lg-6 mb20">
                                     <h5>Account Number</h5>

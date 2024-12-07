@@ -6,8 +6,8 @@
                 <button type="button" class="btn-close" onclick="hideLoginPopup()" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="loginForm" method="post" action="" onsubmit="return validateForm()">
-                    <div class="row mb-12" id="customerTypeDiv">
+                <form id="login_form" method="post">
+                    <div class="row mb-12">
                         <div class="col-md-12" style="text-align: center;">
                             <label class="radio-img" style="display: inline-block; margin: 20px; text-align: center;">
                                 <input type="radio" name="userType" value="customer" onchange="loadLoginForm(this.value)">
@@ -24,14 +24,14 @@
                     </div>
                     <div class="loginInfo d-none">   
                         <div class="form-group mb-3">
-                            <label for="email"><b>Email address</b></label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                            <label for="login_email"><b>Email address</b></label>
+                            <input type="email" class="form-control" id="login_email" name="login_email" placeholder="Enter email" required>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="password"><b>Password</b></label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                            <label for="login_password"><b>Password</b></label>
+                            <input type="password" class="form-control" id="login_password" name="login_password" placeholder="Enter password" required>
                         </div>
-                       <input type="hidden" name="customerType" id="customerType">
+                       <input type="hidden" name="login_user_type" id="login_user_type">
                     </div>
                 </form>
             </div>
@@ -46,12 +46,11 @@
 
 <div class="offcanvas offcanvas-end custom-offcanvas" id="registerOffcanvas" tabindex="-1" aria-labelledby="registerOffcanvasLabel">
     <div class="offcanvas-header" style="background-color: #4287f5; border: 2px solid #4287f5;">
-        <a class="back-button d-none" id="backBtn" onclick="showSelect()"><i class="fa fa-arrow-left"></i></a>
         <h5 id="registerOffcanvasLabel" class="w-100 text-center" style="color: white;">Register</h5>
         <a class="back-button" onclick="hideRegisterOffcanvas()"><i class="fa fa-times"></i></a>
     </div>
     <div class="offcanvas-body d-flex justify-content-center align-items-center" style="overflow-y:auto">
-        <form id="registerForm" class="w-100">
+        <form id="register_form" class="w-100">
             <div class="row" id="customerTypeDiv">
                 <div class="col-md-12" style="display: flex; justify-content: center; align-items: center;">
                     <label for="userType"><b>Who are you ?</b></label>
@@ -71,20 +70,20 @@
                 </div>  
             </div>
 
-            <div id="personalInfo" class="d-none">
+            <div id="personal_info_div" class="d-none">
                 <h5 class="mb-3"><b>Personal Info</b></h5>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter full name" required>
+                        <label for="register_name">Full Name</label>
+                        <input type="text" class="form-control" id="register_name" name="register_name" placeholder="Enter full name" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="register_email">Email Address</label>
                         <input type="email" class="form-control" id="register_email" name="register_email" placeholder="Enter email" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="contact">Contact Number</label>
-                        <input type="tel" class="form-control" id="contact" name="contact" placeholder="Enter contact number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
+                        <label for="register_contact">Contact Number</label>
+                        <input type="tel" class="form-control" id="register_contact" name="register_contact" placeholder="Enter contact number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="register_password">Password</label>
@@ -93,75 +92,83 @@
                 </div>
             </div>
 
-            <div id="addressDetails" class="d-none">
+            <div id="address_details_div" class="d-none">
                 <h5 class="mb-3"><b>Address Details</b></h5>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="house">House/Apartment</label>
-                        <input type="text" class="form-control" id="house" name="house" placeholder="Enter house or apartment" required>
+                        <label for="register_house">House/Apartment</label>
+                        <input type="text" class="form-control" id="register_house" name="register_house" placeholder="Enter house or apartment" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="street">Street</label>
-                        <input type="text" class="form-control" id="street" name="street" placeholder="Enter street" required>
+                        <label for="register_street">Street</label>
+                        <input type="text" class="form-control" id="register_street" name="register_street" placeholder="Enter street" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" name="city" placeholder="Enter city" required>
+                        <label for="register_city">City</label>
+                        <input type="text" class="form-control" id="register_city" name="register_city" placeholder="Enter city" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="state">State</label>
-                        <input type="text" class="form-control" id="state" name="state" placeholder="Enter state" required>
+                        <label for="register_state">State</label>
+                        <input type="text" class="form-control" id="register_state" name="register_state" placeholder="Enter state" required>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="zip">Zip Code</label>
-                        <input type="text" class="form-control" id="zip" name="zip" placeholder="Enter zip code" required>
+                        <label for="register_zip">Zip Code</label>
+                        <input type="text" class="form-control" id="register_zip" name="register_zip" placeholder="Enter zip code" required>
                     </div>
                 </div>
             </div>
-            <div id = "terms-condition" class="col-md-12 d-none">
+            <div id="terms_condition_div" class="col-md-12 d-none">
                 <label>
-                    <input type="checkbox" name="terms" required style="width: 16px; height: 16px; margin-right: 8px;"> 
+                    <input type="checkbox" id="register_terms" name="register_terms" required style="width: 16px; height: 16px; margin-right: 8px;"> 
                     I agree to the 
                     <a href="customer/terms_of_services.php" target="_blank" style="color: #4287F5; text-decoration: underline;">
                         Terms and Conditions
                     </a>
                 </label>
             </div>
-            <input type="hidden" name="customerType" id="customerType">
+            <input type="hidden" id="register_user_type">
+            <input type="hidden" id="register_user_lat">
+            <input type="hidden" id="register_user_long">
         </form>
     </div>
     <div class="offcanvas-footer" style="justify-content: space-between;">
         <button type="button" class="register-btn btn btn-info" onclick="hideRegisterOffcanvas()" style="font-weight: 800;font-size: 14px;font-family: var(--title-font);">Close</button>
-        <a href="javascript:void(0)" class="register-btn btn btn-main d-none" onclick="registerUser()" id="registerButton" style="text-align: center;padding: .625rem 1.5rem .5rem;">Register</a>
+        <a href="javascript:void(0)" class="register-btn btn btn-main d-none" onclick="registerUser()" id="register_button" style="text-align: center;padding: .625rem 1.5rem .5rem;">Register</a>
     </div>
 </div>
 
-<!-- <div id="loader" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-</div> -->
-
-<div id="pageOverlay" style="display: none;"></div>
-
-
+<div id="pageOverlay"></div>
 
 <style>
+    #pageOverlay {
+        display: none; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        pointer-events: none;
+    }
 
+    #pageOverlay.active {
+        display: block;
+        animation: pulse 1.5s infinite; 
+    }
 
+    @keyframes pulse {
+        0% {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 0.8;
+        }
+        100% {
+            opacity: 0.5;
+        }
+    }
 
-
-
-#pageOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Faded effect */
-    z-index: 9999; /* Ensure it's on top of all elements */
-    pointer-events: none; /* Disable interactions */
-}
     .radio-img {
         display: inline-block;
         text-align: center;
@@ -207,72 +214,71 @@
 </style>
 
 <script>
-
-
-function login() {
-    var email = $('#email').val();
-    var password = $('#password').val();
-    var userType = $('#customerType').val();
-
-    if (userType == '') {
-        toastr.error('Something went wrong! Not able to verify you.');
-        return;
-    }
-
-    if (email == '') {
-        toastr.error('Please enter your email address.');
-        return;
-    } else if (!validateEmail(email)) {
-        toastr.error('Please enter a valid email address.');
-        return;
-    }
-
-    if (password == '') {
-        toastr.error('Please enter your password.');
-        return;
-    } else if (password.length < 6) {
-        toastr.error('Password must be at least 6 characters long.');
-        return;
-    }
-
-    var request = (userType === 'owner') ? 'login@rental' : 'login_renter@rental';
-
-    var data = {
-        email: email,
-        password: password,
-        userType: request,
-    };
-
-    
-    $('#pageOverlay').css({
-        display: 'block',
-        pointerEvents: 'all' 
+    $(document).ready(function () {
+        getAndStoreLocation();
     });
 
-    $.ajax({
-        type: 'POST',
-        url: 'functions/login.php',
-        data: data,
-        success: function (response) {
-            var result = JSON.parse(response);
+    function login() {
+        var email = $('#login_email').val();
+        var password = $('#login_password').val();
+        var userType = $('#login_user_type').val();
 
-            if (result.status) {
-                toastr.success(result.message);
-                window.location.href = result.redirect_url;
-            } else {
-                toastr.error(result.message);
-            }
-        },
-        error: function () {
-            toastr.error('An error occurred during registration. Please try again!');
-        },
-        complete: function () {
-            // Hide the overlay after the AJAX request is complete
-            $('#pageOverlay').css('display', 'none');
+        if (userType == '') {
+            toastr.error('Something went wrong! Not able to verify you.');
+            setTimeout(()=>{
+                window.location.reload();
+            },300);
         }
-    });
-}
 
+        if (email == '') {
+            toastr.error('Please enter email address.');
+            return;
+        } else if (!validateEmail(email)) {
+            toastr.error('Please enter a valid email address.');
+            return;
+        }
+
+        if (password == '') {
+            toastr.error('Please enter your password.');
+            return;
+        } else if (password.length < 6) {
+            toastr.error('Password must be at least 6 characters long.');
+            return;
+        }
+
+        var request = (userType === 'owner') ? 'login@rental' : 'login_renter@rental';
+
+        var data = {
+            email: email,
+            password: password,
+            userType: request,
+        };
+
+        
+        $('#pageOverlay').css({ display: 'block', pointerEvents: 'all' });
+
+        $.ajax({
+            type: 'POST',
+            url: 'functions/login.php',
+            data: data,
+            success: function (response) {
+                var result = JSON.parse(response);
+
+                if (result.status) {
+                    toastr.success(result.message);
+                    window.location.href = result.redirect_url;
+                } else {
+                    toastr.error(result.message);
+                }
+            },
+            error: function () {
+                toastr.error('An error occurred during login. Please try again!');
+            },
+            complete: function () {
+                $('#pageOverlay').css('display', 'none');
+            }
+        });
+    }
     
     function validateEmail(email) {
         var re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -281,23 +287,40 @@ function login() {
 
 
     function registerUser() {
-        var userType = $('#customerType').val();
-        var name = $('#name').val();
-        var email = $('#register_email').val();
-        var contact = $('#contact').val();
-        var password = $('#register_password').val();
-        var house = $('#house').val();
-        var street = $('#street').val();
-        var city = $('#city').val();
-        var state = $('#state').val();
-        var zip = $('#zip').val();
 
+        if (!$('#register_terms').is(':checked')) {
+            toastr.error("You must agree to the terms and conditions.");
+            return;
+        }
+
+        var user_type = $('#register_user_type').val();
+
+        var name = $('#register_name').val();
+        var email = $('#register_email').val();
+        var contact = $('#register_contact').val();
+        var password = $('#register_password').val();
+
+        var lat = $('#register_user_lat').val();
+        var long = $('#register_user_long').val();
+
+        var house = null;
+        var street = null;
+        var city = null;
+        var state = null;
+        var zip = null;
+
+        if(user_type == "customer"){
+            house = $('#register_house').val();
+            street = $('#register_street').val();
+            city = $('#register_city').val();
+            state = $('#register_state').val();
+            zip = $('#register_zip').val();
+        }
           
         if (name == '') {
             toastr.error('Please enter your full name.');
             return;
         }
-
   
         if (email == '') {
             toastr.error('Please enter your email address.');
@@ -318,7 +341,7 @@ function login() {
         }
 
    
-        if (userType == 'customer') {
+        if (user_type == 'customer') {
             if (house == '') {
                 toastr.error('Please enter your house or apartment.');
                 return;
@@ -347,106 +370,96 @@ function login() {
             email: email,
             contact: contact,
             password: password,
+            lat: lat,
+            lng: long
         };
 
-        if (userType === 'customer') {
+        if (user_type === 'customer') {
             data.house = house;
             data.street = street;
             data.city = city;
             data.state = state;
             data.zip_code = zip;
-            data.lat = '1';
-            data.lng = '1';
         }
 
-        data.request = userType === 'owner' ? 'register_customer@rental' : 'register_renter@rental';
+        data.request = user_type === 'owner' ? 'register_customer@rental' : 'register_renter@rental';
         
-        console.log(data);
+        $('#pageOverlay').addClass('active');
 
-    //      $('#pageOverlay').css({
-    //     display: 'block',
-    //     pointerEvents: 'all' 
-    // });
-        // return;
+
+
         $.ajax({
             type: 'POST',
             url: 'functions/registration.php',
             data: data,
             success: function (response) {
-                var jsonResponse = response;
-                  // console.log("Raw response:", response);
-                console.log(jsonResponse);
-                // return;
-                var resData = jsonResponse.response[0];
-                    
-                  console.log (resData);
-                  return; 
-                if (resData.status) {
-                    var userData = resData.data;
-                    var message = 'Registration successful! Welcome, ' + userData.name + '.';
-                        
-                    toastr.success(message);
 
+                var jsonResponse = JSON.parse(response);
+
+
+                if (jsonResponse.response[0].status) {
+                    toastr.success('Registration successful!');
                     hideRegisterOffcanvas(); 
                 } else {
-                   var error_message = 'Registration failed: ' + resData.msg;
-                    toastr.error(error_message);
+                    $('#pageOverlay').removeClass('active');
+                    toastr.error('Registration failed: ' + jsonResponse.response[0].msg);
                 }
-                
             },
-            error: function() {
+            error: function () {
+                $('#pageOverlay').removeClass('active');
+                
                 toastr.error('An error occurred during registration. Please try again!');
-            }
+            },
+            complete: function () {
+                $('#pageOverlay').removeClass('active');
+            },
         });
     }
 
-
-
-    function showSelect(){
-        loadRegisterForm('');
-    }
-
     function loadRegisterForm(type){
-       
-        if(type == ''){
-            $('#userType').val('');
-            $('#customerTypeDiv').removeClass('d-none');
-            $('#backBtn').addClass('d-none');
 
-            $('#personalInfo').addClass('d-none');
-            $('#addressDetails').addClass('d-none');
-            $('#registerButton').addClass('d-none');
-            $('#terms-condition').addClass('d-none');
-    
-            $('#customerType').val('');
+        getAndStoreLocation();
 
-            return;
+        $("#register_form").find("input, select, textarea").each(function() {
+            if (this.type === "radio") {
+                return; 
+            } else if (this.type === "checkbox") {
+                this.checked = false; 
+            } else {
+                $(this).val("");
+            }
+        });
 
-        }
+        $('#personal_info_div').removeClass('d-none');
+
+        $('#register_button').removeClass('d-none');
+        $('#register_back_btn').removeClass('d-none');
+        $('#terms_condition_div').removeClass('d-none');
         
+        var lat = getCookie('user_lat') || null;
+        var lng = getCookie('user_lng') || null;
+
         if(type == 'customer'){
-            $('#addressDetails').removeClass('d-none');
-            $('#terms-condition').removeClass('d-none');
+            $('#address_details_div').removeClass('d-none');
         }
 
         if(type == 'owner'){
-            $('#addressDetails').addClass('d-none');
-            $('#terms-condition').addClass('d-none');
+            $('#address_details_div').addClass('d-none');
         }
+
+        $('#register_user_lat').val(lat);
+        $('#register_user_long').val(lng);
+        $('#register_user_type').val(type);
  
-        $('#registerButton').removeClass('d-none');
-        $('#personalInfo').removeClass('d-none');
-        $('#customerTypeDiv').addClass('d-none');
-        $('#backBtn').removeClass('d-none');
-        $('#terms-condition').removeClass('d-none');
-
-        $('#customerType').val(type);
-        console.log(type);
-
-
     }
 
     function showRegisterOffcanvas() {
+        $('#personal_info_div').addClass('d-none');
+        $('#address_details_div').addClass('d-none');
+        $('#terms_condition_div').addClass('d-none');
+        $('#register_button').addClass('d-none');
+        
+        $("#register_form").trigger("reset");
         $('#registerOffcanvas').offcanvas('show'); 
     }
 
@@ -455,6 +468,11 @@ function login() {
     }
 
     function showLoginPopup(){
+
+        $('#login_form').trigger("reset");
+        $('#loginButton').addClass('d-none');
+        $('.loginInfo').addClass('d-none');
+
         $('#loginPopup').modal('show');
     }
 
@@ -465,10 +483,57 @@ function login() {
     
     function loadLoginForm(type){
         $('.loginInfo').removeClass('d-none');
-        $('#customerType').val('');
-        $('#customerType').val(type);
+        $('#loginButton').removeClass('d-none');
+
+        $('#login_user_type').val('');
+        $('#login_user_type').val(type);
 
     }
+
+
+    //below functions are only for geolocation
+
+    function getAndStoreLocation() {
+        let lat = getCookie('user_lat');
+        let lng = getCookie('user_lng');
+
+        if (lat && lng) {
+            return; 
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    lat = position.coords.latitude;
+                    lng = position.coords.longitude;
+                    setCookie('user_lat', lat, 7); 
+                    setCookie('user_lng', lng, 7);
+
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); 
+        document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+    }
+
+    function getCookie(name) {
+        const cookies = document.cookie.split('; ');
+        for (let i = 0; i < cookies.length; i++) {
+            const [key, value] = cookies[i].split('=');
+            if (key === name) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+
 
 
 </script>
