@@ -65,6 +65,16 @@
     </div>
 </section>
 
+
+<style>
+
+.d-img-list-div img {
+  max-height: 184px; /* Set the desired maximum height */
+  width: 100%;       /* Make the width responsive to the container */
+  object-fit: contain; /* Ensures images fill the container proportionally */
+  border-radius: 5px; /* Optional: Adds rounded corners */
+}
+    </style>
 <script>
     function get_brands() {
         $.ajax({
@@ -202,7 +212,7 @@
                 <div class="col-xl-4 col-lg-6">
                     <div class="de-item mb30">
                         <div class="d-img-list-div">
-                            <img src="${car.image[0]}" class="img-fluid" alt="${car.brand} ${car.model}">
+                            <img src="${car.image[0]}" class="img-fluid" alt="${car.brand} ${car.model}" >
                         </div>
                         <div class="d-info">
                             <div class="d-text">
@@ -275,7 +285,7 @@
                 <div class="col-xl-4 col-lg-6">
                     <div class="de-item mb30">
                         <div class="d-img-list-div">
-                            <img src="${car.image[0]}" class="img-fluid" alt="${car.brand} ${car.model}">
+                            <img src="${car.image[0]}" class="img-fluid" alt="${car.brand} ${car.model}" >
                         </div>
                         <div class="d-info">
                             <div class="d-text">

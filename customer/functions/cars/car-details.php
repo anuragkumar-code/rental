@@ -33,14 +33,10 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
     $brand = $car_data['brand'];
     $model = $car_data['model'];
     $description = $car_data['desc'];
-    $features = $car_data['features']; 
     $body = $car_data['cat_name']; 
     $seats = $car_data['seats'];
-    $doors = $car_data['doors']; 
-    $luggage = $car_data['luggage']; 
     $fuel_type = $car_data['feul']; 
     $engine = $car_data['engine'];
-    $mileage = $car_data['mileage']; 
     $transmission = $car_data['gear']; 
     $speed =$car_data['speed'];
     $price =$car_data['price'];
@@ -111,13 +107,7 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                                         <p class="card-text">Engine <br><strong>' . $engine . '</strong></p>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                       <div class="details-img-icons"><img src="../assets/images/car-detail-icons/new_icon.png"  class="" alt="Car Insurance" /></div>
-                                        <p class="card-text">Insurance <br><strong>'; 
-                                        $html .= isset($insurance) && $insurance != '' ? $insurance : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
+                               
                                 <div class="col-lg-3 col-md-6 mb-4">
                                     <div class="text-center">
                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/kms-done.png"   class="new_icon_color_filter"alt="Top Speed" /></div>
@@ -132,20 +122,8 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                                         $html .= isset($transmission) && $transmission != '' ? $transmission : 'Not Specified';$html .= '</strong></p>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/number-plate.png"  class="" alt="Number Plate" /></div>
-                                        <p class="card-text">Number Plate <br><strong>'; 
-                                        $html .= isset($number_plate) && $number_plate != '' ? $number_plate : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/rupees-symbol.png"  class="new_icon_color_filter" alt="Car Price" /></div>
-                                        <p class="card-text">Price <br><strong>'; 
-                                        $html .= isset($price) && $price != '' ? $price : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
+                               
+                               
                                  <div class="col-lg-3 col-md-6 mb-4">
                                     <div class="text-center">
                                         <div class="details-img-icons"><img src="../assets/images/car-detail-icons/exterior-color.png"  class="new_icon_color_filter" alt="Car Color" /></div>
@@ -153,14 +131,7 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                                         $html .= isset($color) && $color != '' ? $color : 'Not Specified';$html .= '</strong></p>
                                     </div>
                                 </div>
-                                
-                                 <div class="col-lg-3 col-md-6 mb-4">
-                                    <div class="text-center">
-                                        <div class="details-img-icons"><img src="../assets/images/car-detail-icons/location-icon.png"  class="" alt="Car Location" /></div>
-                                        <p class="card-text">Location <br><strong>'; 
-                                        $html .= isset($location) && $location != '' ? $location : 'Not Specified';$html .= '</strong></p>
-                                    </div>
-                                </div>
+                             
                                
                                
                             </div>

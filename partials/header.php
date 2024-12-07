@@ -61,7 +61,7 @@
                     <div class="topbar-left xs-hide">
                         <div class="topbar-widget">
                             <div class="topbar-widget"><a href="#"><i class="fa fa-phone"></i>+208 333 9296</a></div>
-                            <div class="topbar-widget"><a href="#"><i class="fa fa-envelope"></i>contact@whip.com</a></div>
+                            <div class="topbar-widget"><a href="#"><i class="fa fa-envelope"></i><a href="#" id="support-email"></a></div>
                             <div class="topbar-widget"><a href="#"><i class="fa fa-clock-o"></i>Mon - Fri 08.00 - 18.00</a></div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                                         <a class="menu-item d-none" href="quick-booking.php">Booking</a>
                                     </li>
                                     <li>
-                                        <a class="menu-item d-none" href="about-us.php">About Us</a>
+                                        <a class="menu-item d-none" href="#" id="about-link">About Us</a>
                                     </li>
                                     <li>
                                         <a class="menu-item" href="contact-us.php">&nbsp;</a>
@@ -122,3 +122,26 @@
         </header>
         <div class="no-bottom no-top" id="content">
             <div id="top"></div>
+
+
+            <script>
+
+$(document).ready(function() {
+    fetchAndShowData_head();
+});
+                function fetchAndShowData_head() {
+    const aboutUs = localStorage.getItem("about_us");
+    const supportEmail = localStorage.getItem("support_email");
+      
+    const aboutLink = document.getElementById("about-link");  
+    const supportEmailLink = document.getElementById("support-email"); 
+    
+    aboutLink.href = aboutUs;  
+    supportEmailLink.textContent = supportEmail;
+    supportEmailLink.href = `mailto:${supportEmail}`;
+
+}
+
+
+            </script>
+          
