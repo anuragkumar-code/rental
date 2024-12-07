@@ -24,9 +24,7 @@ curl_setopt_array($curl, array(
 ));
 
 $response = curl_exec($curl);
-
 curl_close($curl);
-
 $data = json_decode($response, true);
  
 $fetch = $data['response'][0]['data'];
@@ -42,25 +40,25 @@ if ($fetch) {
 ?>
 
  <style>
-        .profile_img-01 {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            overflow: hidden;
-            cursor: pointer;
-            display: inline-block;
-        }
+    .profile_img-01 {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        cursor: pointer;
+        display: inline-block;
+    }
 
-        .profile_img-01 img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .profile_img-01 img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-        #fileInput {
-            display: none;
-        }
-    </style>
+    #fileInput {
+        display: none;
+    }
+</style>
 
 <section id="subheader" class="jarallax text-light">
     <img src="../assets/images/background/4.jpg" class="jarallax-img" alt="">
@@ -126,7 +124,56 @@ if ($fetch) {
     </div>
 </div>
 
+<div class="modal fade" id="add_review" tabindex="-1" aria-labelledby="add_reviewLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add_reviewLabel">Add Review</h5>
+                <a href="javascript:void(0)" class="btn-close" onclick="hideReviewPopup()" aria-label="Close"></a>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm">
+                    <div class="mb-3">
+                        <div class="star-rating" id="starRating">
+                            <span data-value="1">☆</span>
+                            <span data-value="2">☆</span>
+                            <span data-value="3">☆</span>
+                            <span data-value="4">☆</span>
+                            <span data-value="5">☆</span>
+                        </div>
+                    </div>
+                    <div class="mt-5 mb-3">
+                        <textarea class="form-control" id="reviewContent" name="review" rows="4" placeholder="Write your review here..."></textarea>
+                        <input type="hidden" id="review_customer_id">
+                        <input type="hidden" id="star_reviews">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" class="btn-main" onclick="hideReviewPopup()">Close</a>
+                <a href="javascript:void(0)" class="btn-main" onclick="add_review()">Add Review</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
+
+    .star-rating {
+        display: flex;
+        justify-content: flex-start;
+        gap: 5px;
+        font-size: 36px; 
+        cursor: pointer;
+    }
+    .star-rating span {
+        color: #ccc;
+        transition: color 0.3s ease;
+    }
+    .star-rating span.selected {
+        color: #ffc107;
+    }
+
     .profile_img {
         position: relative;
         display: inline-block;
@@ -194,6 +241,38 @@ if ($fetch) {
 
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const starRating = document.getElementById('starRating');
+    let selectedRating = 0; 
+
+    starRating.addEventListener('click', (event) => {
+        if (event.target.tagName === 'SPAN') {
+        const value = parseInt(event.target.getAttribute('data-value'));
+        selectedRating = value; 
+        updateStarRating(value);
+        }
+    });
+
+    function updateStarRating(value) {
+        const stars = starRating.querySelectorAll('span');
+        const starReviewsInput = document.getElementById('star_reviews');
+        stars.forEach((star) => {
+        const starValue = parseInt(star.getAttribute('data-value'));
+        star.classList.toggle('selected', starValue <= value);
+        });
+
+        if (starReviewsInput) {
+        starReviewsInput.value = value;
+        }
+    }
+
+    window.submitReview = function () {
+        const reviewText = document.getElementById('reviewContent').value;
+        const starReviewsValue = document.getElementById('star_reviews').value;
+    };
+    });
+
 
     function openModal() {
         document.getElementById("editModal").style.display = "flex";
@@ -294,23 +373,69 @@ if ($fetch) {
     }
 
     function loadHistory(){
-        var user_id = "<?php echo $_SESSION['user_id']; ?>";
-        
-            $.ajax({
-                url: 'pages/ajax_history.php',
-                method: 'POST',
-                data: {
-                    
-                    user_id : user_id,
-
-                },
+        $.ajax({
+            url: 'pages/ajax_history.php',
+            method: 'POST',
             success: function(response) {
                 $('.customClass').removeClass('active');
                 $('#historyTab').addClass('active');
-
                 $('#mainDiv').html('');
                 $('#mainDiv').html(response);
-                
+            },
+            error: function() {
+                toastr.error('<b>An error occurred while processing your request. Please try again.</b>');
+            }
+        });
+    }
+
+    function showReviewPopup(customer_id){
+        $('#review_customer_id').val('');
+        $('#star_reviews').val('');
+
+        $('#review_customer_id').val(customer_id);
+        $('#add_review').modal('show');
+    }
+
+    function hideReviewPopup(){
+        $('#review_customer_id').val('');
+        $('#star_reviews').val('');
+        
+        $('#add_review').modal('hide');
+
+    }
+
+    function add_review(){
+        var customer_id = $('#review_customer_id').val();
+
+        var ratings = $('#star_reviews').val();
+        var review = $('#reviewContent').val();
+
+        $.ajax({
+            url: 'functions/profile/ajax_addreview.php',
+            method: 'POST',
+            data:{
+                customer_id: customer_id,
+                ratings: ratings,
+                review: review
+            },
+            success: function(response) {
+                try {
+                    var jsonResponse = JSON.parse(response); 
+                    if (jsonResponse.response && jsonResponse.response.length > 0) {
+                        var res = jsonResponse.response[0];
+                        if (res.status === true) {
+                            toastr.success(`<b>${res.msg}</b>`);
+
+                            hideReviewPopup();
+                        } else {
+                            toastr.error(`<b>${res.reason || 'An error occurred.'}</b>`);
+                        }
+                    } else {
+                        toastr.error('<b>Something went wrong. Please try again.</b>');
+                    }
+                } catch (e) {
+                    toastr.error('<b>Failed to process the response.</b>');
+                }
             },
             error: function() {
                 toastr.error('<b>An error occurred while processing your request. Please try again.</b>');
@@ -358,39 +483,32 @@ if ($fetch) {
     });
     
     function updateData(){
-            let formData = new FormData();
-            formData.append('user_id', "<?php echo $_SESSION['user_id']; ?>");
-            formData.append('name', $('#name').val());
-            formData.append('email', $('#email_address').val());
-            formData.append('contact', $('#contact').val());
+        let formData = new FormData();
+        formData.append('user_id', "<?php echo $_SESSION['user_id']; ?>");
+        formData.append('name', $('#name').val());
+        formData.append('email', $('#email_address').val());
+        formData.append('contact', $('#contact').val());
            
-            $.ajax({
-                url: 'functions/profile/edit_owner.php',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (result) {
-                   
-                    var fetch = JSON.parse(result);
-                     console.log(fetch); 
-                    
-                    if (fetch.response[0].status == true) {
-                        
-                        toastr.success('Profile has been updated!')
-                        loadProfile();
-                        
-                    }
-                        else { toastr.error('An error occurred during profile update. Please try again!');}
+        $.ajax({
+            url: 'functions/profile/edit_owner.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                var fetch = JSON.parse(result);
 
-                   
-                    // alert('Profile updated successfully!');
-                     
-                },
-                error: function () {
-                    alert('Error updating profile.');
+                if (fetch.response[0].status == true) {
+                    toastr.success('Profile has been updated!')
+                    loadProfile();
+                }else { 
+                    toastr.error('An error occurred during profile update. Please try again!');
                 }
-            });
+            },
+            error: function () {
+                alert('Error updating profile.');
+            }
+        });
         
     }
     
