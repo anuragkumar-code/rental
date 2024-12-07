@@ -89,11 +89,10 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'owner') {
                                     <li><a class="menu-item" href="javascript:void(0)">Account</a>
                                         <ul>
                                             <li><a class="menu-item" href="../owner/profile.php">My Profile</a></li>
-                                            <li><a class="menu-item" href="../owner/reviews.php">Reviews</a></li>
                                             <li><a class="menu-item" href="../functions/logout.php">Logout</a></li>
                                         </ul>
                                     </li>
-                                      <li>
+                                    <li>
                                         <a class="menu-item" href="../owner/notifications.php">
                                             <i class="fa fa-bell"></i>
                                         </a>
