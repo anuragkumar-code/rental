@@ -386,12 +386,16 @@
         
         $('#pageOverlay').addClass('active');
 
+
+
         $.ajax({
             type: 'POST',
             url: 'functions/registration.php',
             data: data,
             success: function (response) {
+
                 var jsonResponse = JSON.parse(response);
+
 
                 if (jsonResponse.response[0].status) {
                     toastr.success('Registration successful!');

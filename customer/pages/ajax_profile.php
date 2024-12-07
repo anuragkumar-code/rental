@@ -51,15 +51,15 @@ $html .= '<div class="card padding40 rounded-5">
                             <div class="row">
                                 <div class="col-lg-6 mb20">
                                     <h5>Name</h5>
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter your full name" value="' . ($profileData['name'] ?? '') . '" />
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter your full name" readonly value="' . ($profileData['name'] ?? '') . '" />
                                 </div>
                                 <div class="col-lg-6 mb20">
                                   <h5>Email Address</h5>
-                                  <input type="text" name="email_address" id="email_address" class="form-control" placeholder="Enter your email" value="' . ($profileData['email'] ?? '') . '" />
+                                  <input type="text" name="email_address" id="email_address" class="form-control" placeholder="Enter your email" readonly value="' . ($profileData['email'] ?? '') . '" />
                                 </div>
                                 <div class="col-lg-6 mb20">
                                   <h5>Contact</h5>
-                                  <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter your contact number" value="' . ($profileData['contact'] ?? '') . '" />
+                                  <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter your contact number" readonly value="' . ($profileData['contact'] ?? '') . '" />
                                 </div>
                             </div>
                         </div>

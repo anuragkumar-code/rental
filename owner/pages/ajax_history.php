@@ -1,135 +1,107 @@
-<div class="card padding30 rounded-5 mb25">
-    <h4>Scheduled Bookings</h4>
+<?php
+session_start();
+$curl = curl_init();
+
+$user_id = $_SESSION['user_id']; 
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'POST',
+  CURLOPT_POSTFIELDS => array('request' => 'get_booking','user_id' => $user_id),
+  CURLOPT_HTTPHEADER => array(
+    'Authorization: Bearer e37834b4b0119181b399479527013ab1a206ca8326e23cea4427aacc3ce709a0'
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+$response_data = json_decode($response, true);
+
+$html = ''; 
+
+if ($response_data['response'][0]['status'] === true && !empty($response_data['response'][0]['data'])){
+
+  $booking_data = $response_data['response'][0]['data'];
+
+  $html .= '<div class="card padding30 rounded-5 mb25">
+    <h4>Booking History</h4>
     <table class="table de-table">
       <thead>
         <tr>
           <th scope="col"><span class="fs-12 text-gray">Order ID</span></th>
           <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Pick Up Location</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Drop Off Location</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Customer Name</span></th>
           <th scope="col"><span class="fs-12 text-gray">Pick Up Date</span></th>
           <th scope="col"><span class="fs-12 text-gray">Return Date</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Payment Status</span></th>
           <th scope="col"><span class="fs-12 text-gray">Status</span></th>
+          <th scope="col"><span class="fs-12 text-gray">Action</span></th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01245</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">Ferrari Enzo</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>Kentucky</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Michigan</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 14, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 16, 2023</td>
-          <td><div class="badge rounded-pill bg-warning">scheduled</div></td>
-        </tr>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01245</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">VW Polo</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>Philadelphia</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Washington</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 16, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 18, 2023</td>
-          <td><div class="badge rounded-pill bg-warning">scheduled</div></td>
-        </tr>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01216</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">Toyota Rav 4</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>Baltimore</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Sacramento</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 19, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 20, 2023</td>
-          <td><div class="badge rounded-pill bg-warning">scheduled</div></td>
-        </tr>
-      </tbody>
+      <tbody>';
+    
+      foreach ($booking_data as $data) {
+        $payment_status = $data['is_paid'] === 'Y' ? ['label' => 'Completed', 'color' => 'bg-success'] : ['label' => 'Not Completed', 'color' => 'bg-danger'];
+        
+        switch ($data['status']) {
+          case 'DC':
+            $booking_status = ['label' => 'Request Declined', 'color' => 'bg-danger'];
+            break;
+          case 'AC':
+            $booking_status = ['label' => 'Ride Accepted', 'color' => 'bg-primary'];
+            break;
+          case 'success':
+            $booking_status = ['label' => 'Success', 'color' => 'bg-success'];
+            break;
+          default:
+            $booking_status = ['label' => 'Request Pending', 'color' => 'bg-warning'];
+        }
+    
+        $html .= '<tr>
+          <td>
+            <span class="badge bg-gray-100 text-dark">#' . $data['booking_id'] . '</span>
+          </td>
+          <td>
+            <span class="bold">' . $data['car']['brand'] . ' ' . $data['car']['model'] . '</span>
+          </td>
+          <td>
+            <span class="d-sm-block">' . $data['cust']['name'] . '</span>
+          </td>
+          <td>
+            <span class="d-sm-block">' . $data['from_date'] . '</span>
+          </td>
+          <td>
+            <span class="d-sm-block">' . $data['to_date'] . '</span>
+          </td>
+          <td>
+            <span class="badge rounded-pill ' . $payment_status['color'] . '">' . $payment_status['label'] . '</span>
+          </td>
+          <td>
+            <span class="badge rounded-pill ' . $booking_status['color'] . '">' . $booking_status['label'] . '</span>
+          </td>
+          <td class="text-center">
+            <a title="Click here to add review" href="javascript:void(0)" onclick=showReviewPopup('.$data['renter_id'].')><i class="fa fa-edit"></i></a>
+          </td>
+        </tr>';
+      }
+    
+
+  $html .= '</tbody>
     </table>
-</div>
-<div class="card padding30 rounded-5 mb25">
-    <h4>Completed Bookings</h4>
-    <table class="table de-table">
-      <thead>
-        <tr>
-          <th scope="col"><span class="fs-12 text-gray">Order ID</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Pick Up Location</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Drop Off Location</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Pick Up Date</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Return Date</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Status</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01236</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">Jeep Renegade</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>New York</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Los Angeles</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 2, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 11, 2023</td>
-          <td><div class="badge rounded-pill bg-success">completed</div></td>
-        </tr>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01287</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">Hyundai Staria</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>Nevada</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>New Mexico</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 6, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 12, 2023</td>
-          <td><div class="badge rounded-pill bg-success">completed</div></td>
-        </tr>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01236</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">Range Rover</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>Virginia</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Oregon</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 2, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 13, 2023</td>
-          <td><div class="badge rounded-pill bg-success">completed</div></td>
-        </tr>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01287</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">BMW M2</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>Kansas City</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Houston</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 1, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 14, 2023</td>
-          <td><div class="badge rounded-pill bg-success">completed</div></td>
-        </tr>
-      </tbody>
-    </table>
-</div>
-<div class="card padding30 rounded-5 mb25">
-    <h4>Cancelled Bookings</h4>
-    <table class="table de-table">
-      <thead>
-        <tr>
-          <th scope="col"><span class="fs-12 text-gray">Order ID</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Car Name</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Pick Up Location</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Drop Off Location</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Pick Up Date</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Return Date</span></th>
-          <th scope="col"><span class="fs-12 text-gray">Status</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01263</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">Mini Cooper</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>San Fransisco</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Chicago</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 8, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 12, 2023</td>
-          <td><div class="badge rounded-pill bg-danger">cancelled</div></td>
-        </tr>
-        <tr>
-          <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#01263</div></td>
-          <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">Ford Raptor</span></td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Location</span>Georgia</td>
-          <td><span class="d-lg-none d-sm-block">Drop Off Location</span>Lousiana</td>
-          <td><span class="d-lg-none d-sm-block">Pick Up Date</span>March 8, 2023</td>
-          <td><span class="d-lg-none d-sm-block">Return Date</span>March 13, 2023</td>
-          <td><div class="badge rounded-pill bg-danger">cancelled</div></td>
-        </tr>
-      </tbody>
-    </table>
-</div>
+  </div>';
+
+}else {
+  $html .= '<div class="card padding30 rounded-5 mb25 "><h4>No Bookings to show!!</h4></div>';
+}
+
+echo $html;
+                            
+
+?>
