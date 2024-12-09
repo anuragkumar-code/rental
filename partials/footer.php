@@ -18,7 +18,7 @@
                     <address class="s1">
                         <span><i class="id-color fa fa-map-marker fa-lg"></i>08 W 36th St, New York, NY 10001</span>
                         <span><i class="id-color fa fa-phone fa-lg"></i>+1 333 9296</span>
-                        <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="mailto:contact@example.com">contact@example.com</a></span>
+                        <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="#" id="support-email"></a></span>
                         <span><i class="id-color fa fa-file-pdf-o fa-lg"></i><a href="#">Download Brochure</a></span>
                     </address>
                 </div>
@@ -30,11 +30,11 @@
                     <div class="col-lg-6">
                         <div class="widget">
                             <ul>
-                                <li><a href="#">About</a></li>
+                                <li><a href="#" id="about-link">About</a></li>
                                 <li><a href="#">Blog</a></li>
                                 <li><a href="#">Careers</a></li>
-                                <li><a href="#">News</a></li>
-                                <li><a href="#">Partners</a></li>
+                                <li><a href="#" >News</a></li>
+                                <li><a href="#"  id="faq-link">Faq</a></li>
                             </ul>
                         </div>
                     </div>
@@ -66,8 +66,8 @@
                             </a>
                         </div>
                         <ul class="menu-simple">
-                            <li><a href="#">Terms &amp; Conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#" id="terms-link">Terms &amp; Conditions</a></li>
+                            <li><a href="#" id="privacy-link">Privacy Policy</a></li>
                         </ul>
                     </div>
                 </div>
@@ -94,6 +94,40 @@
     "hideMethod": "fadeOut"
 };
 </script>
+
+
+
+<script>
+
+$(document).ready(function() {
+    fetchAndShowData();
+});
+                function fetchAndShowData() {
+    const aboutUs = localStorage.getItem("about_us");
+    const privacyPolicy = localStorage.getItem("privacy_policy");
+    const termsCondition = localStorage.getItem("terms_condition");
+    const faq = localStorage.getItem("faq");
+    const supportEmail = localStorage.getItem("support_email");
+
+    
+    const privacyLink = document.getElementById("privacy-link");  
+    const aboutLink = document.getElementById("about-link");  
+    const termsLink = document.getElementById("terms-link");  
+    const faqLink = document.getElementById("faq-link");  
+    const supportEmailLink = document.getElementById("support-email");  
+  
+    
+    privacyLink.href = privacyPolicy;
+    aboutLink.href = aboutUs;
+    termsLink.href = termsCondition;
+    faqLink.href = faq;
+    supportEmailLink.textContent = supportEmail;
+    supportEmailLink.href = `mailto:${supportEmail}`;
+
+}
+
+
+            </script>
 </body>
 
 </html>

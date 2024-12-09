@@ -274,6 +274,52 @@
         </div>
     </section>   
             
+<script>
+$(document).ready(function() {
+    get_links();
+});
+
+    function get_links() {
+        $.ajax({
+            type: 'POST',
+            url: 'functions/links.php',
+            data: {},
+            success: function(response) {
+                try {
+                    const jsonResponse = JSON.parse(response);
+                  
+                       
+                    
+                    if (jsonResponse.response && jsonResponse.response[0].data) {
+                       
+                        const linksData = jsonResponse.response[0].data[0];
+                    localStorage.setItem("about_us", linksData.about_us);
+                    localStorage.setItem("privacy_policy", linksData.privacy_policy);
+                    localStorage.setItem("terms_condition", linksData.terms_condition);
+                    localStorage.setItem("faq", linksData.faq);
+                    localStorage.setItem("support_email", linksData.support_email);
+
+                    // console.log("Data saved in local storage.");return
+                     
+                    } else {
+                        console.error('Invalid response structure.');
+                    }
+                } catch (error) {
+                    console.errpr('Error parsing JSON response:', error);
+                }
+            },
+            error: function() {
+                alert('An error occurred while fetching links.');
+            }
+        });
+    }
+
+
+    </script>
+
+
+
+          
 
 <?php include('partials/auth_footer.php'); ?>
 <?php include('partials/footer.php'); ?>
