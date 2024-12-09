@@ -23,7 +23,21 @@ $response = curl_exec($curl);
 curl_close($curl);
 
 $response_data = json_decode($response, true);
+
+$static_images = [
+    "https://alliedtechnologies.cloud/clients/whips/api/v1/car_images/70/bmw-m5.jpg",
+    "https://alliedtechnologies.cloud/clients/whips/api/v1/car_images/70/ferrari-enzo.jpg",
+    "https://alliedtechnologies.cloud/clients/whips/api/v1/car_images/70/ford-raptor.jpg",
+    "https://alliedtechnologies.cloud/clients/whips/api/v1/car_images/70/mini-cooper.jpg",
+    "https://alliedtechnologies.cloud/clients/whips/api/v1/car_images/70/vw-polo.jpg",
+    "https://alliedtechnologies.cloud/clients/whips/api/v1/car_images/70/sample1.jpg",
+    "https://alliedtechnologies.cloud/clients/whips/api/v1/car_images/70/sample2.jpg"
+];
+
+
 // echo "<pre>"; print_r($response_data);exit;
+
+
 $html = ''; 
 
 if ($response_data['response'][0]['status'] === true && !empty($response_data['response'][0]['data']['car_details'])) {
@@ -55,10 +69,12 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                 <div class="col-lg-6">
                     <div id="slider-carousel" class="owl-carousel">';
     
-                        foreach ($car_data['image'] as $img) {
-                            $html .= '<div class="item">
-                                        <img src="' . $img . '" alt="">
-                                      </div>';
+                        foreach ($static_images as $img) {
+                            if ($img != 'undefined'){
+                                $html .= '<div class="item">
+                                    <img src="' . $img . '" alt="">
+                                </div>';
+                            }
                         }
 
         $html .= '</div>
@@ -187,6 +203,14 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
             </div>
         </div>
     </div>';
+
+    $html .= '<script>
+        $(".owl-thumb-item").each(function () {
+            if ($(this).find("img").attr("src") === "undefined") {
+                $(this).remove(); 
+            }
+        });
+    </script>';
 
 } else {
     $html .= '<p>No car details available.</p>';

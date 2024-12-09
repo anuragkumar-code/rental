@@ -3,7 +3,6 @@ session_start();
 
 $brand = $_POST['brand'];
 $model = $_POST['model'];
-$car_name = $_POST['car_name'];
 $car_type = $_POST['car_type'];
 $engine_specs = $_POST['engine_specs'];
 $car_color = $_POST['car_color'];
@@ -12,12 +11,13 @@ $speed = $_POST['speed'];
 $gear_type = $_POST['gear_type'];
 $fuel_type = $_POST['fuel_type'];
 $description = $_POST['description'];
-$car_lng = $_POST['car_lng'];
-$car_lat = $_POST['car_lat'];
-$car_loc = $_POST['car_loc'];
+// $car_lng = $_POST['car_lng'];
+// $car_lat = $_POST['car_lat'];
+// $car_loc = $_POST['car_loc'];
 
 $user_id = $_SESSION['user_id'];
 $car_id_rand = $_POST['car_id'];
+
 $carDetails = array(
     'request' => 'edit_car_details',
     'user_id' => $user_id,
@@ -51,39 +51,39 @@ if ($carData['response'][0]['status'] === true) {
     exit;
 }
 
-$carDocs = array(
-    'request' => 'car_docs',
-    'user_id' => $user_id,
-    'car_det_id' => $car_det_id,
-    'insurance' => new CURLFILE($_FILES['car_insurance']['tmp_name']),
-    'ssn' => $_POST['ssn'],
-    'number_plate' => new CURLFILE($_FILES['number_plate']['tmp_name'])
-);
+// $carDocs = array(
+//     'request' => 'car_docs',
+//     'user_id' => $user_id,
+//     'car_det_id' => $car_det_id,
+//     'insurance' => new CURLFILE($_FILES['car_insurance']['tmp_name']),
+//     'ssn' => $_POST['ssn'],
+//     'number_plate' => new CURLFILE($_FILES['number_plate']['tmp_name'])
+// );
 
-$response = apiRequest('https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php', $carDocs);
-$docData = json_decode($response, true);
+// $response = apiRequest('https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php', $carDocs);
+// $docData = json_decode($response, true);
 
-if (!$docData['response'][0]['status']) {
-    echo json_encode(['error' => 'Failed to upload car documents.']);
-    exit;
-}
+// if (!$docData['response'][0]['status']) {
+//     echo json_encode(['error' => 'Failed to upload car documents.']);
+//     exit;
+// }
 
-$carImages = [
-    'request' => 'add_car_images',
-    'user_id' => $user_id,
-    'car_id' => $car_id
-];
-foreach ($_FILES['car_images']['tmp_name'] as $index => $tmpName) {
-    $carImages['car_images[' . $index . ']'] = new CURLFILE($tmpName);
-}
+// $carImages = [
+//     'request' => 'add_car_images',
+//     'user_id' => $user_id,
+//     'car_id' => $car_id
+// ];
+// foreach ($_FILES['car_images']['tmp_name'] as $index => $tmpName) {
+//     $carImages['car_images[' . $index . ']'] = new CURLFILE($tmpName);
+// }
 
-$response = apiRequest('https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php', $carImages);
-$imageData = json_decode($response, true);
+// $response = apiRequest('https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php', $carImages);
+// $imageData = json_decode($response, true);
 
-if (!$imageData['response'][0]['status']) {
-    echo json_encode(['error' => 'Failed to upload car images.']);
-    exit;
-}
+// if (!$imageData['response'][0]['status']) {
+//     echo json_encode(['error' => 'Failed to upload car images.']);
+//     exit;
+// }
 
 echo json_encode(['success' => 'Car details, documents, and images added successfully.']);
 

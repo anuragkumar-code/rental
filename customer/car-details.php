@@ -1,5 +1,29 @@
 <?php include ('partials/customer-header.php'); ?>
 
+<style>
+    .owl-thumbs {
+        display: flex;
+        flex-wrap: nowrap; 
+        overflow-x: auto;  
+        padding: 10px 0;
+        gap: 10px;        
+        scrollbar-width: thin; 
+    }
+
+    .owl-thumb-item {
+        flex: 0 0 auto; 
+    }
+
+    .owl-thumbs::-webkit-scrollbar {
+        height: 8px; 
+    }
+
+    .owl-thumbs::-webkit-scrollbar-thumb {
+        background: #ccc; 
+        border-radius: 4px;
+    }
+</style>
+
 <section id="subheader" class="jarallax text-light">
     <img src="../assets/images/background/2.jpg" class="jarallax-img" alt="">
     <div class="center-y relative text-center">

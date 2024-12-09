@@ -40,14 +40,7 @@ $card_id = $_GET['car_id'];
 
 <script>
 
-    function removeImage(index, imageUrl) {
-        const imageContainer = document.getElementById(`image-container-${index}`);
-        if (imageContainer) {
-            imageContainer.remove();
-        }
-    }
-
-    function addCar() {
+    function editCarDetails() {
         $('.errorClass').addClass('d-none');
 
         var brand = $('#brand').val();
@@ -63,31 +56,14 @@ $card_id = $_GET['car_id'];
         var fuel_type = $('#fuel_type').val();
         var description = $('#description').val();
         var car_id = $('#car_id').val();
-        var car_lng = $('#car_lng').val();
-        var car_lat = $('#car_lat').val();
-        var car_loc = $('#car_loc').val();
-        var car_insurance = $('#car_insurance')[0].files[0];
-        var number_plate = $('#number_plate')[0].files[0];
+        // var car_lng = $('#car_lng').val();
+        // var car_lat = $('#car_lat').val();
+        // var car_loc = $('#car_loc').val();
+        // var car_insurance = $('#new_car_insurance')[0].files[0];
+        // var number_plate = $('#new_number_plate')[0].files[0];
         var ssn = $('#ssn').val();
 
         var car_images = $('#car_images')[0].files;
-
-        // if (!brand) { $('#brandsError').removeClass('d-none'); return; }
-        // if (!model) { $('#modelError').removeClass('d-none'); return; }
-        // if (!car_name) { $('#nameError').removeClass('d-none'); return; }
-        // if (!car_type) { $('#typeError').removeClass('d-none'); return; }
-        // if (!engine_specs) { $('#engineError').removeClass('d-none'); return; }
-        // if (!car_color) { $('#colorError').removeClass('d-none'); return; }
-        // if (!seats) { $('#seatsError').removeClass('d-none'); return; }
-        // if (!speed) { $('#speedError').removeClass('d-none'); return; }
-        // if (!price) { $('#priceError').removeClass('d-none'); return; }
-        // if (!gear_type) { $('#gearError').removeClass('d-none'); return; }
-        // if (!fuel_type) { $('#fuelError').removeClass('d-none'); return; }
-        // if (!description) { $('#descError').removeClass('d-none'); return; }
-        // if (!car_insurance) { $('#insuranceError').removeClass('d-none'); return; }
-        // if (!number_plate) { $('#numberPlateError').removeClass('d-none'); return; }
-        // if (!ssn) { $('#ssnError').removeClass('d-none'); return; }
-        // if (car_images.length === 0) { $('#imagesError').removeClass('d-none'); return; }
 
         var formData = new FormData();
         formData.append('brand', brand);
@@ -103,17 +79,17 @@ $card_id = $_GET['car_id'];
         formData.append('fuel_type', fuel_type);
         formData.append('description', description);
         formData.append('car_id', car_id);
-        formData.append('car_lng', car_lng);
-        formData.append('car_lat', car_lat);
-        formData.append('car_loc', car_loc);
+        // formData.append('car_lng', car_lng);
+        // formData.append('car_lat', car_lat);
+        // formData.append('car_loc', car_loc);
            
-        formData.append('car_insurance', car_insurance);
-        formData.append('number_plate', number_plate);
+        // formData.append('car_insurance', car_insurance);
+        // formData.append('number_plate', number_plate);
         formData.append('ssn', ssn);
 
-        for (let i = 0; i < car_images.length; i++) {
-            formData.append('car_images[]', car_images[i]);
-        }
+        // for (let i = 0; i < car_images.length; i++) {
+        //     formData.append('car_images[]', car_images[i]);
+        // }
 
         $.ajax({
             type: 'POST',
@@ -122,8 +98,11 @@ $card_id = $_GET['car_id'];
             processData: false,
             contentType: false, 
             success: function(response) {
-                console.log(response);
-                alert('Car details submitted successfully.');
+                toastr.success('Car details updated successfully.');
+
+                setTimeout(()=>{
+                    window.location.reload();
+                },500);
             },
             error: function(xhr, status, error) {
                 alert('An error occurred: ' + error);

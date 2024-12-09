@@ -46,14 +46,6 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="car_name">Car Name</label>
-                        <input type="text" id="car_name" name="car_name" class="form-control" placeholder="Enter car name">
-                        <p id="nameError" class="d-none text-danger errorClass">Please enter car name</p>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-group">
                         <label for="car_type">Car Category</label>
                         <select id="car_type" name="car_type" class="form-select" required>
                             <option value="">Select car category</option>
@@ -214,7 +206,6 @@
 
         var brand = $('#brand').val();
         var model = $('#model').val();
-        var car_name = $('#car_name').val();
         var car_type = $('#car_type').val();
         var engine_specs = $('#engine_specs').val();
         var car_color = $('#car_color').val();
@@ -236,7 +227,6 @@
         var formData = new FormData();
         formData.append('brand', brand);
         formData.append('model', model);
-        formData.append('car_name', car_name);
         formData.append('car_type', car_type);
         formData.append('engine_specs', engine_specs);
         formData.append('car_color', car_color);
