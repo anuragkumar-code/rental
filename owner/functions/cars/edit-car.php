@@ -8,11 +8,10 @@ $engine_specs = $_POST['engine_specs'];
 $car_color = $_POST['car_color'];
 $seats = $_POST['seats'];
 $speed = $_POST['speed'];
+$price = $_POST['price'];
 $gear_type = $_POST['gear_type'];
 $fuel_type = $_POST['fuel_type'];
 $description = $_POST['description'];
-// $car_lng = $_POST['car_lng'];
-// $car_lat = $_POST['car_lat'];
 // $car_loc = $_POST['car_loc'];
 
 $user_id = $_SESSION['user_id'];
@@ -32,9 +31,7 @@ $carDetails = array(
     'feul' => $fuel_type,
     'desc' => $description,
     'model' => $model,
-    'loc' => $car_loc, 
-    'lat' => $car_lat, 
-    'lng' => $car_lng, 
+    // 'loc' => $car_loc, 
     'cat_name' => $car_type,
     'car_color' => $car_color
 );
@@ -46,7 +43,6 @@ if ($carData['response'][0]['status'] === true) {
     $car_id = $carData['response'][0]['data']['car_id'];
     $car_det_id = $carData['response'][0]['data']['car_det_id'];
 } else {
-    // echo "<pre>"; print_r($carData);
     echo json_encode(['error' => 'Failed to add car details.']);
     exit;
 }
@@ -73,6 +69,7 @@ if ($carData['response'][0]['status'] === true) {
 //     'user_id' => $user_id,
 //     'car_id' => $car_id
 // ];
+
 // foreach ($_FILES['car_images']['tmp_name'] as $index => $tmpName) {
 //     $carImages['car_images[' . $index . ']'] = new CURLFILE($tmpName);
 // }

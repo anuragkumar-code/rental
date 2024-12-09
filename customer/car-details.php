@@ -40,7 +40,12 @@
 
 
 <section id="section-car-details">
-    
+    <div class="text-center">
+        <img style="height:80px" id="loader" src="../assets/images/balls.svg" class="" alt="">
+        <div class="spacer-20"></div>
+            <h4>Loading...</h4>
+        </div>
+    </div>
 </section>
 
 
@@ -70,14 +75,14 @@
                 });
             },
             error: function() {
-                alert('An error occurred while fetching the products.');
+                toastr.error('An error occurred while fetching the products.');
             }
         });
     }    
 
     setTimeout(()=>{
         categoryFilter(); 
-    },1000);
+    },300);
 
 
 
@@ -87,7 +92,6 @@
 
     function hideBookingPopup(){
         $('#bookingPopup').modal('hide');
-
     }
     
     function makePayment(){
@@ -112,9 +116,11 @@
                 if(fetch.code == '200' && fetch.payment_link){
                     window.location.href = fetch.payment_link;
                 }else {
-                    toastr.error('An error occurred while initiating the booking. Please try again!');
-                    $('#editModal').modal('hide'); 
-                    $('#profileImage').val(''); 
+                    if(fetch.reason == 'booking_already_exists'){
+                        toastr.error('Car not available for this date range. Please choose any other date or any other car.');
+                    }
+                    
+                    $('#bookingPopup').modal('hide'); 
                 }
             },
             error: function () {

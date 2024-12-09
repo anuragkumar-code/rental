@@ -117,7 +117,7 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'customer') {
                             <div class="de-flex-col">
                                 <ul id="mainmenu">
                                     <li>
-                                        <a class="menu-item" href="/rental">Home</a>
+                                        <a class="menu-item" href="../customer/">Home</a>
                                     </li>
                                     
                                     <li><a class="menu-item" href="javascript:void(0)">Account</a>

@@ -56,12 +56,11 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
     $price =$car_data['price'];
     $color =$car_data['color'];
     $number_plate =$car_data['number_plate'];
-    $location =$car_data['loc'];
     $owner_name =$car_owner_details['name'];
     $owner_contact =$car_owner_details['contact'];
     $car_id = $car_data['car_id'];
     $owner_id = $car_data['owner_id'];
-      $location = !empty($car_data['loc']) ? $car_data['loc'] : 'Not Specified';
+    $location = !empty($car_data['loc']) ? $car_data['loc'] : 'Not Specified';
       
     $html .= '
         <div class="container">
@@ -82,6 +81,7 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                 <div class="col-lg-6">
                     <h3>' . $car_data['brand'] . ' ' . $car_data['model'] . '</h3>
                     <p>' . $car_data['desc'] . '</p>
+                    <p><strong>Owner:</strong> ' . htmlspecialchars($owner_name) . '</p>
                     <div class="col-lg-4 text-center">
                         <a href="javascript:void(0)" onclick="showBookingPopup()" class="btn-main btn-lg" style="width: 100%;">Rent Now</a>
                     </div>
@@ -139,7 +139,6 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                                     </div>
                                 </div>
                                
-                               
                                  <div class="col-lg-3 col-md-6 mb-4">
                                     <div class="text-center">
                                         <div class="details-img-icons"><img src="../assets/images/car-detail-icons/exterior-color.png"  class="new_icon_color_filter" alt="Car Color" /></div>
@@ -147,8 +146,6 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                                         $html .= isset($color) && $color != '' ? $color : 'Not Specified';$html .= '</strong></p>
                                     </div>
                                 </div>
-                             
-                               
                                
                             </div>
                         </div>

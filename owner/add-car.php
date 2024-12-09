@@ -31,7 +31,6 @@
                         <select id="brand" name="brand" class="form-select" required>
                             <option value="">Select Car Brand</option>
                         </select>
-                        <p id="brandsError" class="d-none text-danger errorClass">Please select the car brand</p>
                     </div>
                 </div>
 
@@ -39,7 +38,6 @@
                     <div class="form-group">
                         <label for="model">Enter Model</label>
                         <input type="text" id="model" name="model" class="form-control" placeholder="Enter Car Model">
-                        <p id="modelError" class="d-none text-danger errorClass">Please enter the car model</p>
                         
                     </div>
                 </div>
@@ -50,7 +48,6 @@
                         <select id="car_type" name="car_type" class="form-select" required>
                             <option value="">Select car category</option>
                         </select>
-                        <p id="typeError" class="d-none text-danger errorClass">Please select car category</p>
                     </div>
                 </div>
 
@@ -58,7 +55,6 @@
                     <div class="form-group">
                         <label for="engine_specs">Engine Specs</label>
                         <input type="text" id="engine_specs" name="engine_specs" class="form-control" placeholder="Enter Engine Specs">
-                        <p id="engineError" class="d-none text-danger errorClass">Please enter enginer power</p>
                     </div>
                 </div>
 
@@ -66,7 +62,6 @@
                     <div class="form-group">
                         <label for="car_color">Car Color</label>
                         <input type="text" id="car_color" name="car_color" class="form-control" placeholder="Enter color">
-                        <p id="colorError" class="d-none text-danger errorClass">Please enter car color</p>
                     </div>
                 </div>
 
@@ -83,7 +78,6 @@
                             <option value="7">7</option>
                             <option value="8">8</option>
                         </select>
-                        <p id="seatsError" class="d-none text-danger errorClass">Please enter number of seats</p>
                     </div>
                 </div>
 
@@ -91,7 +85,6 @@
                     <div class="form-group">
                         <label for="speed">Top Speed</label>
                         <input type="text" id="speed" name="speed" class="form-control" placeholder="Enter Top Speed (miles/hr)">
-                        <p id="speedError" class="d-none text-danger errorClass">Please enter top speed</p>
                     </div>
                 </div>
                 
@@ -99,7 +92,6 @@
                     <div class="form-group">
                         <label for="price">Price</label>
                         <input type="text" id="price" name="price" class="form-control" placeholder="Enter price">
-                        <p id="priceError" class="d-none text-danger errorClass">Please enter price</p>
                     </div>
                 </div>
 
@@ -111,7 +103,6 @@
                             <option value="manual">Manual</option>
                             <option value="automatic">Automatic</option>
                         </select>
-                        <p id="gearError" class="d-none text-danger errorClass">Please select gear type car color</p>
                     </div>
                 </div>
 
@@ -123,7 +114,13 @@
                             <option value="petrol">Petrol</option>
                             <option value="diesel">Diesel</option>
                         </select>
-                        <p id="fuelError" class="d-none text-danger errorClass">Please select fuel type</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" class="form-control" placeholder="Enter car location">
                     </div>
                 </div>
 
@@ -131,7 +128,6 @@
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea type="text" id="description" name="description" class="form-control" placeholder="Enter description of the car..."></textarea>
-                        <p id="descError" class="d-none text-danger errorClass">Please enter description of the car</p>
                     </div>
                 </div>
             </div>
@@ -214,6 +210,7 @@
         var price = $('#price').val();
         var gear_type = $('#gear_type').val();
         var fuel_type = $('#fuel_type').val();
+        var location = $('#location').val();
         var description = $('#description').val();
     
         var car_insurance = $('#car_insurance')[0].files[0];
@@ -235,8 +232,12 @@
         formData.append('price', price);
         formData.append('gear_type', gear_type);
         formData.append('fuel_type', fuel_type);
+        formData.append('location', location);
         formData.append('description', description);
-    
+
+        formData.append('car_lat', getCookie('car_lat'));
+        formData.append('car_lng', getCookie('car_lng'));
+
         formData.append('car_insurance', car_insurance);
         formData.append('number_plate', number_plate);
         formData.append('ssn', ssn);
@@ -253,11 +254,15 @@
             contentType: false, 
             success: function(response) {
                 $('body').removeClass('dimmed');
-                console.log(response);
-                alert('Car details submitted successfully.');
+                toastr.success('Car added successfully.');
+
+                setTimeout(()=>{
+                    window.location.reload()
+                },400);
             },
             error: function(xhr, status, error) {
-                alert('An error occurred: ' + error);
+                $('body').removeClass('dimmed');
+                toastr.error('An error occurred: ' + error);
                 console.log(xhr.responseText);
             },
             complete: function() {
@@ -270,9 +275,6 @@
         $.ajax({
             type: 'POST',
             url: 'functions/cars/get-brands.php',
-            data: {
-                
-            },
             success: function(response) {
                 
                 const data = JSON.parse(response);
@@ -297,9 +299,6 @@
         $.ajax({
             type: 'POST',
             url: 'functions/cars/get-categories.php',
-            data: {
-                
-            },
             success: function(response) {
                 
                 const data = JSON.parse(response);
@@ -324,7 +323,49 @@
     setTimeout(()=>{
         get_brands(); 
         get_categories();
+        getAndStoreLocation();
     },300);
+
+
+    function getAndStoreLocation() {
+        let lat = getCookie('car_lat');
+        let lng = getCookie('car_lng');
+
+        if (lat && lng) {
+            return; 
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    lat = position.coords.latitude;
+                    lng = position.coords.longitude;
+                    setCookie('car_lat', lat, 7); 
+                    setCookie('car_lng', lng, 7);
+
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); 
+        document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+    }
+
+    function getCookie(name) {
+        const cookies = document.cookie.split('; ');
+        for (let i = 0; i < cookies.length; i++) {
+            const [key, value] = cookies[i].split('=');
+            if (key === name) {
+                return value;
+            }
+        }
+        return null;
+    }
 </script>
 
 
