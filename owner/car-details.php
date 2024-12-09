@@ -1,9 +1,8 @@
-<?php include ('partials/owner-header.php');
-
+<?php 
+include ('partials/owner-header.php');
 $card_id = $_GET['car_id'];
-
-
 ?>
+
 <section id="subheader" class="jarallax text-light">
     <img src="../assets/images/background/4.jpg" class="jarallax-img" alt="">
     <div class="center-y relative text-center">
@@ -40,6 +39,14 @@ $card_id = $_GET['car_id'];
 
 
 <script>
+
+    function removeImage(index, imageUrl) {
+        const imageContainer = document.getElementById(`image-container-${index}`);
+        if (imageContainer) {
+            imageContainer.remove();
+        }
+    }
+
     function addCar() {
         $('.errorClass').addClass('d-none');
 
