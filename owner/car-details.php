@@ -17,7 +17,12 @@ $card_id = $_GET['car_id'];
 </section>
 
 <section id="add-car-form" class="container mt-5 mb-5">
-
+    <div class="text-center">
+        <img style="height:80px" id="loader" src="../assets/images/balls.svg" class="" alt="">
+        <div class="spacer-20"></div>
+            <h4>Loading...</h4>
+        </div>
+    </div>
 </section>
 
 
@@ -56,14 +61,12 @@ $card_id = $_GET['car_id'];
         var fuel_type = $('#fuel_type').val();
         var description = $('#description').val();
         var car_id = $('#car_id').val();
-        // var car_lng = $('#car_lng').val();
-        // var car_lat = $('#car_lat').val();
         // var car_loc = $('#car_loc').val();
         // var car_insurance = $('#new_car_insurance')[0].files[0];
         // var number_plate = $('#new_number_plate')[0].files[0];
         var ssn = $('#ssn').val();
 
-        var car_images = $('#car_images')[0].files;
+        // var car_images = $('#car_images')[0].files;
 
         var formData = new FormData();
         formData.append('brand', brand);
@@ -79,8 +82,6 @@ $card_id = $_GET['car_id'];
         formData.append('fuel_type', fuel_type);
         formData.append('description', description);
         formData.append('car_id', car_id);
-        // formData.append('car_lng', car_lng);
-        // formData.append('car_lat', car_lat);
         // formData.append('car_loc', car_loc);
            
         // formData.append('car_insurance', car_insurance);

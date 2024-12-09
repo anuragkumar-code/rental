@@ -10,8 +10,12 @@ $seats = $_POST['seats'];
 $speed = $_POST['speed'];
 $gear_type = $_POST['gear_type'];
 $fuel_type = $_POST['fuel_type'];
+$location = $_POST['location'];
 $description = $_POST['description'];
 $price = $_POST['price'];
+
+$car_lat = $_POST['car_lat'];
+$car_lng = $_POST['car_lng'];
 
 $user_id = $_SESSION['user_id'];
 $car_id_rand = time();
@@ -29,9 +33,9 @@ $carDetails = array(
     'feul' => $fuel_type,
     'desc' => $description,
     'model' => $model,
-    'loc' => 'Location', 
-    'lat' => '0', 
-    'lng' => '0', 
+    'loc' => $location, 
+    'lat' => $car_lat, 
+    'lng' => $car_lng, 
     'cat_name' => $car_type,
     'car_color' => $car_color
 );
@@ -47,14 +51,6 @@ if ($carData['response'][0]['status'] === true) {
     exit;
 }
 
-// $carDocs = array(
-//     'request' => 'car_docs',
-//     'user_id' => $user_id,
-//     'car_det_id' => $car_det_id,
-//     'insurance' => new CURLFILE($_FILES['car_insurance']['tmp_name']),
-//     'ssn' => $_POST['ssn'],
-//     'number_plate' => new CURLFILE($_FILES['number_plate']['tmp_name'])
-// );
 
 $carDocs = array(
     'request' => 'car_docs',
@@ -83,9 +79,7 @@ foreach ($_FILES['car_images']['tmp_name'] as $index => $tmpName) {
     $originalFileName = $_FILES['car_images']['name'][$index]; 
     $carImages['car_images[' . $index . ']'] = new CURLFile($tmpName, mime_content_type($tmpName), $originalFileName);
 }
-// foreach ($_FILES['car_images']['tmp_name'] as $index => $tmpName) {
-//     $carImages['car_images[' . $index . ']'] = new CURLFILE($tmpName);
-// }
+
 
 $response = apiRequest('https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php', $carImages);
 $imageData = json_decode($response, true);
