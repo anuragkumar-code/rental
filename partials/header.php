@@ -13,42 +13,36 @@
     <link id="colors" href="assets/css/colors/scheme-01.css" rel="stylesheet" type="text/css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    
     <style>
-    /* Logo Container */
-#logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px; /* Adds a bit of space around the logo */
-}
+        #logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
 
-/* Logo Image Styles */
-.logo-1, .logo-2 {
-    max-width: 180px; /* Adjusts max width to make it responsive */
-    height: auto; /* Maintains aspect ratio */
-    transition: transform 0.3s ease; /* Smooth transition for hover effects */
-}
+        .logo-1, .logo-2 {
+            max-width: 180px; 
+            height: auto; 
+            transition: transform 0.3s ease;
+        }
 
-.logo-1 {
-    display: block;
-}
+        .logo-1 {
+            display: block;
+        }
 
-.logo-2 {
-    display: none; /* Keeps logo-2 hidden by default if it's meant as a secondary logo */
-}
+        .logo-2 {
+            display: none;
+        }
 
-/* Optional Hover Effect */
-#logo a:hover .logo-1 {
-    transform: scale(1.05); /* Slight zoom on hover */
-}
+        #logo a:hover .logo-1 {
+            transform: scale(1.05); 
+        }
 
     </style>
-    <!-- Toastr CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
 
-<!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 </head>
 
@@ -126,22 +120,21 @@
 
             <script>
 
-$(document).ready(function() {
-    fetchAndShowData_head();
-});
+                $(document).ready(function() {
+                    fetchAndShowData_head();
+                });
+
                 function fetchAndShowData_head() {
-    const aboutUs = localStorage.getItem("about_us");
-    const supportEmail = localStorage.getItem("support_email");
-      
-    const aboutLink = document.getElementById("about-link");  
-    const supportEmailLink = document.getElementById("support-email"); 
-    
-    aboutLink.href = aboutUs;  
-    supportEmailLink.textContent = supportEmail;
-    supportEmailLink.href = `mailto:${supportEmail}`;
-
-}
-
+                    const aboutUs = localStorage.getItem("about_us");
+                    const supportEmail = localStorage.getItem("support_email");
+                    
+                    const aboutLink = document.getElementById("about-link");  
+                    const supportEmailLink = document.getElementById("support-email"); 
+                    
+                    aboutLink.href = aboutUs;  
+                    supportEmailLink.textContent = supportEmail;
+                    supportEmailLink.href = `mailto:${supportEmail}`;
+                }
 
             </script>
           
