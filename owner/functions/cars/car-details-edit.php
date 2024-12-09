@@ -80,6 +80,7 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
         <div class="row">
             <h3>Edit Car Details</h3>
             <div class="row">
+                <input type="hidden" id="car_id" value="<?php echo $_POST['car_id']; ?>">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="brand">Select Brand</label>
@@ -100,12 +101,7 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                         <input type="text" id="model" name="model" class="form-control" placeholder="Enter Car Model" value="<?php echo $car_data['model']; ?>">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="car_name">Car Name</label>
-                        <input type="text" id="car_name" name="car_name" class="form-control" placeholder="Enter car name" value="<?php echo $car_data['cat_name']; ?>">
-                    </div>
-                </div>
+                
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="car_type">Car Category</label>
@@ -225,9 +221,6 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
                             <?php foreach ($car_images as $index => $image_url): ?>
                                 <div class="car-image-container position-relative" id="image-container-<?php echo $index; ?>">
                                     <img src="<?php echo htmlspecialchars($image_url); ?>" alt="Car Image" class="img-thumbnail" style="width: 150px; height: auto;" />
-                                    <button type="button" class="btn btn-danger btn-sm remove-image-btn position-absolute" style="top: 5px; right: 5px;" onclick="removeImage(<?php echo $index; ?>, '<?php echo htmlspecialchars($image_url); ?>')">
-                                        &times;
-                                    </button>
                                     <p>
                                         <a href="<?php echo htmlspecialchars($image_url); ?>" target="_blank" class="btn btn-sm btn-primary">View Full Image</a>
                                     </p>
@@ -254,7 +247,7 @@ if ($response_data['response'][0]['status'] === true && !empty($response_data['r
             </div>
         </div>
         <div class="form-navigation mt-4">
-            <a href="javascript:void(0)" onclick="addCar()" class="btn btn-success">Submit</a>
+            <a href="javascript:void(0)" onclick="editCarDetails()" class="btn btn-success">Update</a>
         </div>
     </form>
 

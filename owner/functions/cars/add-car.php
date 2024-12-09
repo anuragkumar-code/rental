@@ -3,7 +3,6 @@ session_start();
 
 $brand = $_POST['brand'];
 $model = $_POST['model'];
-$car_name = $_POST['car_name'];
 $car_type = $_POST['car_type'];
 $engine_specs = $_POST['engine_specs'];
 $car_color = $_POST['car_color'];

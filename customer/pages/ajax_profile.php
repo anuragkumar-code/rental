@@ -91,30 +91,12 @@ $html .= '<div class="card padding40 rounded-5">
                             </div>
                             <div class="col-lg-6 mb20">
                                 <h5>Zip Code</h5>
-                                <input type="number" name="zip_code" id="zip_code" class="form-control" placeholder="Enter Zip Code" value="' . ($profileData['zip_code'] ?? '') . '" />
+                                <input type="text" name="zip_code" id="zip_code" class="form-control" placeholder="Enter Zip Code" value="' . ($profileData['zip_code'] ?? '') . '" />
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Change Password</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6 mb20">
-                                <h5>New Password</h5>
-                                <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Enter new password" />
-                            </div>
-                            <div class="col-lg-6 mb20">
-                                <h5>Confirm Password</h5>
-                                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm new password" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+            
                 <a href="javascript:void(0)" onclick="updateData()" class="btn-main">Update</a>
 
             </form>
