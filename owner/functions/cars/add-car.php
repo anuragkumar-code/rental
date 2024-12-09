@@ -44,18 +44,26 @@ if ($carData['response'][0]['status'] === true) {
     $car_id = $carData['response'][0]['data']['car_id'];
     $car_det_id = $carData['response'][0]['data']['car_det_id'];
 } else {
-    // echo "<pre>"; print_r($carData);
     echo json_encode(['error' => 'Failed to add car details.']);
     exit;
 }
+
+// $carDocs = array(
+//     'request' => 'car_docs',
+//     'user_id' => $user_id,
+//     'car_det_id' => $car_det_id,
+//     'insurance' => new CURLFILE($_FILES['car_insurance']['tmp_name']),
+//     'ssn' => $_POST['ssn'],
+//     'number_plate' => new CURLFILE($_FILES['number_plate']['tmp_name'])
+// );
 
 $carDocs = array(
     'request' => 'car_docs',
     'user_id' => $user_id,
     'car_det_id' => $car_det_id,
-    'insurance' => new CURLFILE($_FILES['car_insurance']['tmp_name']),
+    'insurance' => new CURLFile($_FILES['car_insurance']['tmp_name'], mime_content_type($_FILES['car_insurance']['tmp_name']), $_FILES['car_insurance']['name']),
     'ssn' => $_POST['ssn'],
-    'number_plate' => new CURLFILE($_FILES['number_plate']['tmp_name'])
+    'number_plate' => new CURLFile($_FILES['number_plate']['tmp_name'], mime_content_type($_FILES['number_plate']['tmp_name']), $_FILES['number_plate']['name'])
 );
 
 $response = apiRequest('https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php', $carDocs);
@@ -71,9 +79,14 @@ $carImages = [
     'user_id' => $user_id,
     'car_id' => $car_id
 ];
+
 foreach ($_FILES['car_images']['tmp_name'] as $index => $tmpName) {
-    $carImages['car_images[' . $index . ']'] = new CURLFILE($tmpName);
+    $originalFileName = $_FILES['car_images']['name'][$index]; 
+    $carImages['car_images[' . $index . ']'] = new CURLFile($tmpName, mime_content_type($tmpName), $originalFileName);
 }
+// foreach ($_FILES['car_images']['tmp_name'] as $index => $tmpName) {
+//     $carImages['car_images[' . $index . ']'] = new CURLFILE($tmpName);
+// }
 
 $response = apiRequest('https://alliedtechnologies.cloud/clients/whips/api/v1/owner.php', $carImages);
 $imageData = json_decode($response, true);

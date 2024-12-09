@@ -152,7 +152,6 @@
                     <div class="form-group">
                         <label for="car_insurance">Car Insurance</label>
                         <input type="file" class="form-control" id="car_insurance" name="car_insurance" />
-                        <p id="insuranceError" class="d-none text-danger errorClass">Please upload car insurance</p>
                     </div>
 
                 </div>
@@ -160,14 +159,12 @@
                     <div class="form-group">
                         <label for="number_plate">Car Number Plate</label>
                         <input type="file" class="form-control" id="number_plate" name="number_plate" />
-                        <p id="numberPlateError" class="d-none text-danger errorClass">Please upload car number plate</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="ssn">Social Security Number</label>
                         <input type="text" class="form-control" id="ssn" name="ssn" placeholder="Enter SSN" />
-                        <p id="ssnError" class="d-none text-danger errorClass">Please enter SSN</p>
                     </div>
                 </div>
             </div>
@@ -180,7 +177,6 @@
                     <div class="form-group">
                         <label for="car_images">Car Images</label>
                         <input type="file" class="form-control" id="car_images" name="car_images[]" multiple />
-                        <p id="imagesError" class="d-none text-danger errorClass">Please upload atleast one image</p>
                     </div>
                 </div>
             </div>
@@ -234,23 +230,6 @@
         var ssn = $('#ssn').val();
 
         var car_images = $('#car_images')[0].files;
-
-        // if (!brand) { $('#brandsError').removeClass('d-none'); return; }
-        // if (!model) { $('#modelError').removeClass('d-none'); return; }
-        // if (!car_name) { $('#nameError').removeClass('d-none'); return; }
-        // if (!car_type) { $('#typeError').removeClass('d-none'); return; }
-        // if (!engine_specs) { $('#engineError').removeClass('d-none'); return; }
-        // if (!car_color) { $('#colorError').removeClass('d-none'); return; }
-        // if (!seats) { $('#seatsError').removeClass('d-none'); return; }
-        // if (!speed) { $('#speedError').removeClass('d-none'); return; }
-        // if (!price) { $('#priceError').removeClass('d-none'); return; }
-        // if (!gear_type) { $('#gearError').removeClass('d-none'); return; }
-        // if (!fuel_type) { $('#fuelError').removeClass('d-none'); return; }
-        // if (!description) { $('#descError').removeClass('d-none'); return; }
-        // if (!car_insurance) { $('#insuranceError').removeClass('d-none'); return; }
-        // if (!number_plate) { $('#numberPlateError').removeClass('d-none'); return; }
-        // if (!ssn) { $('#ssnError').removeClass('d-none'); return; }
-        // if (car_images.length === 0) { $('#imagesError').removeClass('d-none'); return; }
 
         $('body').addClass('dimmed');
 

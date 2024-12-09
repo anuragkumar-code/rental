@@ -29,7 +29,6 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'owner') {
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   
-
 </head>
 
 <body>
